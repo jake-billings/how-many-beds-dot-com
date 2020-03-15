@@ -7,9 +7,7 @@ import {
 } from 'react-router-dom'
 import HospitalsView from './HospitalsView'
 import Navbar from 'react-bootstrap/Navbar'
-import 'bootstrap/dist/css/bootstrap.min.css';
-
-// import firebase from './firebase'
+import 'bootstrap/dist/css/bootstrap.min.css'
 
 function App () {
   return (
