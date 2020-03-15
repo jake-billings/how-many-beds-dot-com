@@ -4,7 +4,7 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link,
+  Link, Redirect,
 } from 'react-router-dom'
 import HospitalsView from './HospitalsView'
 
@@ -18,6 +18,7 @@ function App () {
           <Route path="/hospitals">
             <HospitalsView/>
           </Route>
+          <Redirect to="/hospitals"/>
         </Switch>
       </Router>
     </>
