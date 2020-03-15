@@ -40,6 +40,7 @@ class HospitalsView extends Component<Props, State> {
             <li>Total Bed Count: {hospital.totalBedCount}</li>
             <li>Beds Occupied: {hospital.occupiedBedCount}</li>
             <li>Beds Available: {hospital.totalBedCount - hospital.occupiedBedCount}</li>
+            <li>Utilization: {(hospital.occupiedBedCount / hospital.totalBedCount*100).toFixed(2)}%</li>
           </ul>
         </div>
       ))}
