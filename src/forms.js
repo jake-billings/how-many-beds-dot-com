@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import css from './forms.module.css';
 import NumericInput from 'react-numeric-input';
 
-class BedForm extends React.Component {
+export class BedForm extends React.Component {
 
     constructor(props){
         super(props);

@@ -8,6 +8,7 @@ import {
 import HospitalsView from './HospitalsView'
 import Navbar from 'react-bootstrap/Navbar'
 import 'bootstrap/dist/css/bootstrap.min.css'
+import {BedForm} from './forms.js'
 
 function App () {
   return (
@@ -19,6 +20,9 @@ function App () {
         <Switch>
           <Route path="/hospitals">
             <HospitalsView/>
+          </Route>
+          <Route path="/hospital">
+            <BedForm/>
           </Route>
           <Redirect to="/hospitals"/>
         </Switch>
