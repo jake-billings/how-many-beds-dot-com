@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import css from './forms.module.css';
-
+import NumericInput from 'react-numeric-input';
 
 class BedForm extends React.Component {
 
@@ -8,10 +8,10 @@ class BedForm extends React.Component {
         super(props);
         this.state = {
             isCreated: false,
-            facilityName:"",
-            facilityLocation:"",
-            facilityBedCount:0,
-            numCurBed:0
+            name:"",
+            address:"",
+            totalBedCount:0,
+            occupidBedCount:0
         }
 
     }
@@ -22,18 +22,17 @@ class BedForm extends React.Component {
     };
 
     onUpdateParts = (e) => {
-        e.preventDefault();
-        // e.target.value -- to get value updated
+        console.log(e)
     };
 
     facName = (e) => {
-        this.setState({facilityName: e.target.value});
+        this.setState({name: e.target.value});
     };
     facLoc = (e) => {
-        this.setState({facilityLocation: e.target.value});
+        this.setState({address: e.target.value});
     };
     facNumBed = (e) => {
-        this.setState({facilityBedCount: e.target.value});
+        this.setState({totalBedCount: e.target.value});
     };
 
 
@@ -65,7 +64,7 @@ class BedForm extends React.Component {
                     </div>
                     <div className="col-3" hidden={!this.state.isCreated}>
                         <label>How many filled</label>
-                        <input type="number" className="form-control" placeholder="number of full beds" onChange={this.onUpdateParts.bind(this)}/>
+                        <NumericInput type="number" className="form-control" min={0} max={this.state.totalBedCount} value={0} onChange={this.onUpdateParts.bind(this)}/>
                     </div>
                 </div>
             </form>
