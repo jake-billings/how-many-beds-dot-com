@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
-import css from './forms.module.css'
 import NumericInput from 'react-numeric-input'
 import { Hospital } from './types'
 
 type Props = {
+  initialState: Hospital | null,
   onChange: (hospital: Hospital) => void
 }
 
@@ -19,6 +19,10 @@ class HospitalInput extends Component<Props, State> {
       totalBedCount: 0,
       occupiedBedCount: 0,
     },
+  }
+
+  componentDidMount = () => {
+    if (this.props.initialState) this.setState({ hospital: this.props.initialState })
   }
 
   updateHospitalField = (fieldName: string) => (val: any) => {
@@ -48,14 +52,16 @@ class HospitalInput extends Component<Props, State> {
           <input type="text"
                  className="form-control"
                  placeholder="Medical facilities name"
+                 value={this.state.hospital.name}
                  onChange={this.updateHospitalFieldWithEvent('name')}
           />
         </div>
         <div className="col-6">
-          <label>Location</label>
+          <label>Address</label>
           <input type="text"
                  className="form-control"
                  placeholder="Location"
+                 value={this.state.hospital.address}
                  onChange={this.updateHospitalFieldWithEvent('address')}
           />
         </div>

@@ -1,7 +1,6 @@
 import React, { Component, FormEvent } from 'react'
 import { Hospital, validateHospital } from './types'
 import HospitalInput from './HospitalInput'
-import css from './forms.module.css'
 import firebase from './firebase'
 
 type Props = {}
@@ -61,9 +60,10 @@ class CreateHospitalView extends Component<Props, State> {
   render () {
     return (
       <>
-        <div className={css.formContainer}>
+        <div>
           <form onSubmit={this.create}>
             <HospitalInput
+              initialState={this.state.hospital}
               onChange={this.onChangeToHospital}
             />
             {this.state.attemptedCreate && (

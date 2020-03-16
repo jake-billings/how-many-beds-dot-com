@@ -9,6 +9,7 @@ import HospitalsView from './HospitalsView'
 import Navbar from 'react-bootstrap/Navbar'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import CreateHospitalView from './CreateHospitalView'
+import EditHospitalView from './EditHospitalView'
 
 function App () {
   return (
@@ -18,12 +19,9 @@ function App () {
       </Navbar>
       <Router>
         <Switch>
-          <Route exact path="/hospitals/new">
-            <CreateHospitalView/>
-          </Route>
-          <Route exact path="/hospitals">
-            <HospitalsView/>
-          </Route>
+          <Route exact path="/hospitals/new" component={CreateHospitalView}/>
+          <Route exact path="/hospitals/:hospitalId" component={EditHospitalView}/>
+          <Route exact path="/hospitals" component={HospitalsView}/>
           <Redirect to="/hospitals"/>
         </Switch>
       </Router>
