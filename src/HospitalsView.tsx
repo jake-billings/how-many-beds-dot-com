@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import firebase from './firebase'
 import { Hospital } from './types'
 import queryString from 'query-string'
+import HospitalUtilizationChart from './HospitalUtilizationChart'
+
 import {
   Link, RouteComponentProps,
 } from 'react-router-dom'
@@ -78,6 +80,11 @@ class HospitalsView extends Component<PublicProps & RouteComponentProps, State> 
           {this.state.isAdmin && (
             <button className="btn btn-link" onClick={this.deleteHospitalById(hospital.id)}>Delete</button>
           )}
+          <div style={{width: '300px'}}>
+            <HospitalUtilizationChart
+              hospital={hospital}
+            />
+          </div>
           <ul>
             <li>Address: {hospital.address}</li>
             <li>Total Bed Count: {hospital.totalBedCount}</li>
