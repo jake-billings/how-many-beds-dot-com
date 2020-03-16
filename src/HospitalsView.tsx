@@ -21,7 +21,7 @@ class HospitalsView extends Component<Props, State> {
     hospitals.on('value', snapshot => {
       this.setState({
         loading: false,
-        hospitals: snapshot.val() as Hospital[],
+        hospitals: Object.values(snapshot.val()) as Hospital[],
       })
     })
   }
