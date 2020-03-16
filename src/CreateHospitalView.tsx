@@ -60,6 +60,7 @@ class CreateHospitalView extends Component<Props, State> {
   render () {
     return (
       <>
+        <h1>Create Hospital</h1>
         <div>
           <form onSubmit={this.create}>
             <HospitalInput

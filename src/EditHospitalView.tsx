@@ -86,6 +86,7 @@ class EditHospitalView extends Component<Props, State> {
   render () {
     return (
       <>
+        <h1>Edit Hospital</h1>
         {this.state.loading && (
           <>
             <h1>Loading</h1>
