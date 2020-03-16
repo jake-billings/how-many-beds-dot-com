@@ -49,7 +49,6 @@ class EditHospitalView extends Component<PublicProps & RouteComponentProps<{hosp
           this.setState({loading: false, loaded: false, hospital: val})
         }
       })
-
   }
 
   save = (e: FormEvent<HTMLFormElement>) => {
@@ -65,9 +64,13 @@ class EditHospitalView extends Component<PublicProps & RouteComponentProps<{hosp
     try {
       firebase.database().ref(`hospitals/${this.props.match.params.hospitalId}`)
         .set(this.state.hospital)
+
+      this.props.history.push(`/hospitals${this.props.location.search}`)
+
+      // Transition out of the "creating" state so that the form opens again
+      this.setState({ saving: false })
     } catch (e) {
       console.error(e)
-    } finally {
       // Transition out of the "creating" state so that the form opens again
       this.setState({ saving: false })
     }
