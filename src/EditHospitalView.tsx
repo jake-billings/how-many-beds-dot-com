@@ -2,15 +2,9 @@ import React, { Component, FormEvent } from 'react'
 import { Hospital, validateHospital } from './types'
 import HospitalInput from './HospitalInput'
 import firebase from './firebase'
-import queryString from 'query-string'
+import { RouteComponentProps } from 'react-router'
 
-type Props = {
-  match: {
-    params: {
-      hospitalId: string
-    }
-  }
-}
+type PublicProps = {}
 
 type State = {
   loading: boolean,
@@ -19,7 +13,7 @@ type State = {
   hospital: Hospital
 }
 
-class EditHospitalView extends Component<Props, State> {
+class EditHospitalView extends Component<PublicProps & RouteComponentProps<{hospitalId: string}>, State> {
   state = {
     loading: false,
     loaded: false,

@@ -3,14 +3,10 @@ import firebase from './firebase'
 import { Hospital } from './types'
 import queryString from 'query-string'
 import {
-  Link,
+  Link, RouteComponentProps,
 } from 'react-router-dom'
 
-type Props = {
-  location: {
-    search: string
-  }
-}
+type PublicProps = {}
 
 interface HospitalWithKey extends Hospital {
   id: string
@@ -22,7 +18,7 @@ type State = {
   isAdmin: boolean
 }
 
-class HospitalsView extends Component<Props, State> {
+class HospitalsView extends Component<PublicProps & RouteComponentProps, State> {
   state = {
     loading: true,
     hospitals: [] as HospitalWithKey[],
@@ -64,7 +60,7 @@ class HospitalsView extends Component<Props, State> {
         <div key={index}>
           <h2>{hospital.name}</h2>
           {this.state.isAdmin && (
-            <Link to={`/hospitals/${hospital.id}`}>Edit</Link>
+            <Link to={`/hospitals/${hospital.id}${this.props.location.search}`}>Edit</Link>
           )}
           <ul>
             <li>Address: {hospital.address}</li>
@@ -76,7 +72,7 @@ class HospitalsView extends Component<Props, State> {
         </div>
       ))}
       {this.state.isAdmin && (
-        <Link to="/hospitals/new">New</Link>
+        <Link to={`/hospitals/new${this.props.location.search}`}>New</Link>
       )}
     </>
   )

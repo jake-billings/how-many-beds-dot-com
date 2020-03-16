@@ -2,8 +2,9 @@ import React, { Component, FormEvent } from 'react'
 import { Hospital, validateHospital } from './types'
 import HospitalInput from './HospitalInput'
 import firebase from './firebase'
+import { RouteComponentProps } from 'react-router'
 
-type Props = {}
+type PublicProps = {}
 
 type State = {
   creating: boolean,
@@ -12,7 +13,7 @@ type State = {
   hospital: Hospital
 }
 
-class CreateHospitalView extends Component<Props, State> {
+class CreateHospitalView extends Component<PublicProps & RouteComponentProps, State> {
   state = {
     creating: false,
     attemptedCreate: false,
@@ -45,9 +46,13 @@ class CreateHospitalView extends Component<Props, State> {
     try {
       firebase.database().ref('hospitals').push(this.state.hospital)
       this.setState({ created: true })
+
+      // Transition out of the "creating" state so that the form opens again
+      this.setState({ creating: false })
+
+      this.props.history.push(`/hospitals${this.props.location.search}`)
     } catch (e) {
       console.error(e)
-    } finally {
       // Transition out of the "creating" state so that the form opens again
       this.setState({ creating: false })
     }
