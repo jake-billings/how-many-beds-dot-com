@@ -30,14 +30,20 @@ class HospitalsView extends Component<PublicProps & RouteComponentProps, State> 
     const hospitals = firebase.database().ref('hospitals')
     hospitals.on('value', snapshot => {
       const val = snapshot.val()
-      const hospitals = Object
-        .keys(val)
-        .map(key => {
-          return {
-            id: key,
-            ...val[key],
-          }
-        }) as HospitalWithKey[]
+
+      let hospitals: HospitalWithKey[]
+      if (val) {
+        hospitals = Object
+          .keys(val)
+          .map(key => {
+            return {
+              id: key,
+              ...val[key],
+            }
+          }) as HospitalWithKey[]
+      } else {
+        hospitals = []
+      }
 
       this.setState({
         loading: false,
@@ -50,6 +56,10 @@ class HospitalsView extends Component<PublicProps & RouteComponentProps, State> 
     }
   }
 
+  deleteHospitalById = (id: string) => (e: any) => {
+    firebase.database().ref(`hospitals/${id}`).remove()
+  }
+
   render = () => (
     <>
       <h1>Hospitals</h1>
@@ -60,7 +70,13 @@ class HospitalsView extends Component<PublicProps & RouteComponentProps, State> 
         <div key={index}>
           <h2>{hospital.name}</h2>
           {this.state.isAdmin && (
-            <Link to={`/hospitals/${hospital.id}${this.props.location.search}`}>Edit</Link>
+            <Link to={`/hospitals/${hospital.id}${this.props.location.search}`}>
+              <button className="btn btn-link">Edit</button>
+            </Link>
+          )}
+
+          {this.state.isAdmin && (
+            <button className="btn btn-link" onClick={this.deleteHospitalById(hospital.id)}>Delete</button>
           )}
           <ul>
             <li>Address: {hospital.address}</li>
