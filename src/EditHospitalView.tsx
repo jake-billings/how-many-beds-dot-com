@@ -2,6 +2,7 @@ import React, { Component, FormEvent } from 'react'
 import { Hospital, validateHospital } from './types'
 import HospitalInput from './HospitalInput'
 import firebase from './firebase'
+import queryString from 'query-string'
 
 type Props = {
   match: {
