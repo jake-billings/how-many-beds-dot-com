@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Hospital } from './types'
-import {VictoryPie} from 'victory'
+import { VictoryPie } from 'victory'
 
 type PublicProps = {
   hospital: Hospital
@@ -14,9 +14,10 @@ class HospitalUtilizationChart extends Component<PublicProps, State> {
     <>
       <VictoryPie
         data={[
-          { x: "Used", y: this.props.hospital.occupiedBedCount },
-          { x: "Free", y: this.props.hospital.totalBedCount - this.props.hospital.occupiedBedCount }
+          { x: 'Used', y: this.props.hospital.occupiedBedCount },
+          { x: 'Free', y: this.props.hospital.totalBedCount - this.props.hospital.occupiedBedCount },
         ]}
+        innerRadius={90}
       />
     </>
   )
