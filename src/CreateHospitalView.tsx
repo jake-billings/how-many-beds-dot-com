@@ -20,7 +20,12 @@ class CreateHospitalView extends Component<PublicProps & RouteComponentProps, St
     created: false,
     hospital: {
       name: '',
-      address: '',
+      location: {
+        address: '',
+        googleMapsPlaceId: '',
+        lat: 0,
+        lng: 0,
+      },
       totalBedCount: 0,
       occupiedBedCount: 0,
     },
@@ -69,7 +74,7 @@ class CreateHospitalView extends Component<PublicProps & RouteComponentProps, St
         <div>
           <form onSubmit={this.create}>
             <HospitalInput
-              initialState={this.state.hospital}
+              initialValue={this.state.hospital}
               onChange={this.onChangeToHospital}
             />
             {this.state.attemptedCreate && (

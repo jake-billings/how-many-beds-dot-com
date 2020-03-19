@@ -27,10 +27,12 @@ class HospitalsView extends Component<PublicProps & RouteComponentProps, State> 
     isAdmin: false,
   }
 
+  ref: firebase.database.Reference | null = null
+
   componentDidMount = async () => {
     this.setState({ loading: true })
-    const hospitals = firebase.database().ref('hospitals')
-    hospitals.on('value', snapshot => {
+    this.ref = firebase.database().ref('hospitals')
+    this.ref.on('value', snapshot => {
       const val = snapshot.val()
 
       let hospitals: HospitalWithKey[]
@@ -56,6 +58,10 @@ class HospitalsView extends Component<PublicProps & RouteComponentProps, State> 
     if (queryString.parse(this.props.location.search).admin) {
       this.setState({ isAdmin: true })
     }
+  }
+
+  componentWillUnmount = () => {
+    if (this.ref) this.ref.off()
   }
 
   deleteHospitalById = (id: string) => (e: any) => {
@@ -86,7 +92,7 @@ class HospitalsView extends Component<PublicProps & RouteComponentProps, State> 
             />
           </div>
           <ul>
-            <li>Address: {hospital.address}</li>
+            <li>Address: {hospital.location.address}</li>
             <li>Total Bed Count: {hospital.totalBedCount}</li>
             <li>Beds Occupied: {hospital.occupiedBedCount}</li>
             <li>Beds Available: {hospital.totalBedCount - hospital.occupiedBedCount}</li>

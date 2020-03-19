@@ -20,11 +20,18 @@ class EditHospitalView extends Component<PublicProps & RouteComponentProps<{hosp
     saving: false,
     hospital: {
       name: '',
-      address: '',
+      location: {
+        address: '',
+        googleMapsPlaceId: '',
+        lat: 0,
+        lng: 0,
+      },
       totalBedCount: 0,
       occupiedBedCount: 0,
     },
   }
+
+  ref: firebase.database.Reference | null = null
 
   getHospitalValidationErrors = () => {
     return validateHospital(this.state.hospital)
@@ -34,21 +41,21 @@ class EditHospitalView extends Component<PublicProps & RouteComponentProps<{hosp
   canSave = () => !this.state.loading && this.state.loaded && !this.state.saving && this.getHospitalValidationErrors().length === 0
 
   componentDidMount = () => {
-    this.load()
-  }
-
-  load = () => {
     this.setState({ loading: true, loaded: false })
 
-    firebase.database().ref(`hospitals/${this.props.match.params.hospitalId}`)
-      .on('value', (ref) => {
-        const val = ref.val();
-        if (val) {
-          this.setState({loading: false, loaded: true, hospital: val})
-        } else {
-          this.setState({loading: false, loaded: false, hospital: val})
-        }
-      })
+    this.ref = firebase.database().ref(`hospitals/${this.props.match.params.hospitalId}`)
+    this.ref.on('value', (ref) => {
+      const val = ref.val();
+      if (val) {
+        this.setState({loading: false, loaded: true, hospital: val})
+      } else {
+        this.setState({loading: false, loaded: false, hospital: val})
+      }
+    })
+  }
+
+  componentWillUnmount = () => {
+    if (this.ref) this.ref.off()
   }
 
   save = (e: FormEvent<HTMLFormElement>) => {
@@ -98,7 +105,7 @@ class EditHospitalView extends Component<PublicProps & RouteComponentProps<{hosp
           <div>
             <form onSubmit={this.save}>
               <HospitalInput
-                initialState={this.state.hospital}
+                initialValue={this.state.hospital}
                 onChange={this.onChangeToHospital}
               />
               {this.getHospitalValidationErrors().length > 0 && (

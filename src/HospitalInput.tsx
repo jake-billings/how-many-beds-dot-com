@@ -1,9 +1,12 @@
 import React, { Component } from 'react'
 import NumericInput from 'react-numeric-input'
+import LocationInput from './LocationInput'
+
 import { Hospital } from './types'
 
+
 type Props = {
-  initialState: Hospital | null,
+  initialValue: Hospital | null,
   onChange: (hospital: Hospital) => void
 }
 
@@ -12,17 +15,21 @@ type State = {
 }
 
 class HospitalInput extends Component<Props, State> {
-  state = {
-    hospital: {
-      name: '',
-      address: '',
-      totalBedCount: 0,
-      occupiedBedCount: 0,
-    },
-  }
-
-  componentDidMount = () => {
-    if (this.props.initialState) this.setState({ hospital: this.props.initialState })
+  constructor(props: Props) {
+    super(props)
+    this.state = {
+      hospital: props.initialValue || {
+        name: '',
+        location: {
+          address: 'asdf',
+          googleMapsPlaceId: '',
+          lat: 0,
+          lng: 0
+        },
+        totalBedCount: 0,
+        occupiedBedCount: 0,
+      },
+    }
   }
 
   updateHospitalField = (fieldName: string) => (val: any) => {
@@ -58,11 +65,10 @@ class HospitalInput extends Component<Props, State> {
         </div>
         <div className="col-6">
           <label>Address</label>
-          <input type="text"
-                 className="form-control"
-                 placeholder="Location"
-                 value={this.state.hospital.address}
-                 onChange={this.updateHospitalFieldWithEvent('address')}
+
+          <LocationInput
+            initialValue={this.state.hospital.location}
+            onChange={this.updateHospitalField('location')}
           />
         </div>
         <div className="col-6">
