@@ -8,6 +8,14 @@ type PublicProps = {
 
 type State = {}
 
+/**
+ * HospitalUtilizationChart
+ *
+ * React component
+ *
+ * This component accepts a Hospital object in props and draws a doughnut chart representing how fully it is used.
+ *  This is a small wrapper around VictoryChart.
+ */
 class HospitalUtilizationChart extends Component<PublicProps, State> {
 
   render = () => (

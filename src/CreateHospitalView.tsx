@@ -13,6 +13,13 @@ type State = {
   hospital: Hospital
 }
 
+/**
+ * CreateHospitalView
+ *
+ * React Component/View
+ *
+ * This component is responsible for managing writing a new hospital to the database.
+ */
 class CreateHospitalView extends Component<PublicProps & RouteComponentProps, State> {
   state = {
     creating: false,
@@ -31,13 +38,44 @@ class CreateHospitalView extends Component<PublicProps & RouteComponentProps, St
     },
   }
 
+  /**
+   * getHospitalValidationErrors()
+   *
+   * function
+   *
+   * returns an array of strings describing validation problems with the current hospital object
+   */
   getHospitalValidationErrors = () => {
     return validateHospital(this.state.hospital)
   }
 
-  // We can only create a hospital if we are not in the process of creating it and haven't created it yet
-  canCreate = () => !this.state.creating && !this.state.created && this.getHospitalValidationErrors().length === 0
+  /**
+   * canCreate()
+   *
+   * function
+   *
+   * returns true if it is valid to perform a create operation
+   * used to enable/disable form submission
+   * used to enable/disable submit button
+   *
+   * We can only create a hospital if we are not in the process of creating it and haven't created it yet
+   */
+  canCreate = () =>
+    !this.state.creating
+    && !this.state.created
+    && this.getHospitalValidationErrors().length === 0
 
+  /**
+   * save()
+   *
+   * function
+   *
+   * if we can create, we create
+   * then, navigate to the hospitals view
+   *
+   * if there's an error, log it
+   * if we can't create yet, do nothing
+   */
   create = (e: FormEvent<HTMLFormElement>) => {
     // Prevent the default, so we don't get a page reload
     e.preventDefault()
@@ -49,11 +87,11 @@ class CreateHospitalView extends Component<PublicProps & RouteComponentProps, St
     this.setState({ creating: true, attemptedCreate: true })
 
     try {
+      // No need to store this ref since we didn't register any listeners
       firebase.database().ref('hospitals').push(this.state.hospital)
-      this.setState({ created: true })
 
       // Transition out of the "creating" state so that the form opens again
-      this.setState({ creating: false })
+      this.setState({ created: true, creating: false })
 
       this.props.history.push(`/hospitals${this.props.location.search}`)
     } catch (e) {

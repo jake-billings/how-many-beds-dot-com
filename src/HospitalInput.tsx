@@ -14,6 +14,15 @@ type State = {
   hospital: Hospital
 }
 
+/**
+ * HospitalInput
+ *
+ * React Component/Input
+ *
+ * This component abstracts all of the form fields necessary to edit or create a hospital object.
+ *  As a result, we can have a separate component to create and a separte component to edit hospital
+ *  objects without duplicating too much code.
+ */
 class HospitalInput extends Component<Props, State> {
   constructor(props: Props) {
     super(props)
@@ -32,6 +41,26 @@ class HospitalInput extends Component<Props, State> {
     }
   }
 
+  /**
+   * updateHospitalField
+   *
+   * composed function
+   *
+   * returns a function that updates a field with fieldName on the state hospital object
+   *
+   * Usage:
+   *  <NumericInput
+   *  type="number"
+   *  className="form-control"
+   *  placeholder="500"
+   *  min={0}
+   *  value={this.state.hospital.totalBedCount}
+   *  onChange={this.updateHospitalField('totalBedCount')}
+   *  />
+   *
+   * Notice that onChange typically accepts a function - not a functino call. That's because we return the
+   *  function to call to perform the update.
+   */
   updateHospitalField = (fieldName: string) => (val: any) => {
     this.setState(state => {
       const hospital = { ...state.hospital } as any
@@ -41,6 +70,26 @@ class HospitalInput extends Component<Props, State> {
     })
   }
 
+  /**
+   * updateHospitalFieldWithEvent
+   *
+   * composed function
+   *
+   * returns a function that updates a field with fieldName on the state hospital object after receiving an HTML event
+   *
+   * VERY similar to updateHospitalField but works directly with input objects that send native events
+   *
+   * Usage:
+   *  <input type="text"
+   *   className="form-control"
+   *   placeholder="Medical facilities name"
+   *   value={this.state.hospital.name}
+   *   onChange={this.updateHospitalFieldWithEvent('name')}
+   *  />
+   *
+   * Notice that onChange typically accepts a function - not a functino call. That's because we return the
+   *  function to call to perform the update.
+   */
   updateHospitalFieldWithEvent = (fieldName: string) => (e: any) => {
     const val = e.target.value
     this.setState(state => {

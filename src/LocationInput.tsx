@@ -17,6 +17,16 @@ type State = {
   address: string,
 }
 
+/**
+ * LocationSearchInput
+ *
+ * React component
+ *
+ * This component displays a textbox for users to enter an address. That address is autocompleted to a valid location
+ *  by Google Maps.
+ *
+ * This component wraps react-places-autocomplete.
+ */
 class LocationSearchInput extends Component<Props, State> {
   constructor (props: Props) {
     super(props)

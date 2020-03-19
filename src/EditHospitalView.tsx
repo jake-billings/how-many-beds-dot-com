@@ -13,7 +13,18 @@ type State = {
   hospital: Hospital
 }
 
-class EditHospitalView extends Component<PublicProps & RouteComponentProps<{hospitalId: string}>, State> {
+/**
+ * EditHospitalView
+ *
+ * React Component/View
+ *
+ * This component is responsible for loading and writing data to/from Firebase when we are editing a particular
+ *  hospital that already exists. The input fields have been abstracted into HospitalInput. New hospitals are created
+ *  via the NewHospitalView.
+ *
+ * This component redirects back to the hospitals view upon saving.
+ */
+class EditHospitalView extends Component<PublicProps & RouteComponentProps<{ hospitalId: string }>, State> {
   state = {
     loading: false,
     loaded: false,
@@ -31,25 +42,58 @@ class EditHospitalView extends Component<PublicProps & RouteComponentProps<{hosp
     },
   }
 
+  /**
+   * ref
+   *
+   * firebase database reference (or null)
+   *
+   * This is the firebase reference we use to interact with the database. We must store a copy of it
+   *  so that we can close out the watcher when the component unmounts. Otherwise, we will have a memory
+   *  leak. Since new database update events will trigger state updates in an unmounted component.
+   *
+   * See componentDidMount for setup
+   * See componentWillUnmount for teardown
+   */
   ref: firebase.database.Reference | null = null
 
-  getHospitalValidationErrors = () => {
+  /**
+   * getHospitalValidationErrors()
+   *
+   * function
+   *
+   * returns an array of strings describing validation problems with the current hospital object
+   */
+  getHospitalValidationErrors = (): string[] => {
     return validateHospital(this.state.hospital)
   }
 
-  // We can only create a hospital if we are not in the process of creating it and haven't created it yet
-  canSave = () => !this.state.loading && this.state.loaded && !this.state.saving && this.getHospitalValidationErrors().length === 0
+  /**
+   * canSave()
+   *
+   * function
+   *
+   * returns true if it is valid to perform a save operation
+   * used to enable/disable form submission
+   * used to enable/disable submit button
+   *
+   * We can only create a hospital if we are not in the process of creating it and haven't created it yet
+   */
+  canSave = (): boolean =>
+    !this.state.loading
+    && this.state.loaded
+    && !this.state.saving
+    && this.getHospitalValidationErrors().length === 0
 
   componentDidMount = () => {
     this.setState({ loading: true, loaded: false })
 
     this.ref = firebase.database().ref(`hospitals/${this.props.match.params.hospitalId}`)
     this.ref.on('value', (ref) => {
-      const val = ref.val();
+      const val = ref.val()
       if (val) {
-        this.setState({loading: false, loaded: true, hospital: val})
+        this.setState({ loading: false, loaded: true, hospital: val })
       } else {
-        this.setState({loading: false, loaded: false, hospital: val})
+        this.setState({ loading: false, loaded: false, hospital: val })
       }
     })
   }
@@ -58,6 +102,17 @@ class EditHospitalView extends Component<PublicProps & RouteComponentProps<{hosp
     if (this.ref) this.ref.off()
   }
 
+  /**
+   * save()
+   *
+   * function
+   *
+   * if we can save, we save
+   * then, navigate to the hospitals view
+   *
+   * if there's an error, log it
+   * if we can't save yet, do nothing
+   */
   save = (e: FormEvent<HTMLFormElement>) => {
     // Prevent the default, so we don't get a page reload
     e.preventDefault()
@@ -69,9 +124,16 @@ class EditHospitalView extends Component<PublicProps & RouteComponentProps<{hosp
     this.setState({ saving: true })
 
     try {
-      firebase.database().ref(`hospitals/${this.props.match.params.hospitalId}`)
-        .set(this.state.hospital)
+      if (this.ref) {
+        this.ref.set(this.state.hospital)
+      } else {
+        throw new Error('Ref not instantiated - illegal state')
+      }
 
+      //Navigate back to the hospital view whilst preserving the query string
+      // We navigate back as a UX decision
+      // The query string contains (or doesn't contain) the admin parameter and we want to maintain this state,
+      //  so we pass it
       this.props.history.push(`/hospitals${this.props.location.search}`)
 
       // Transition out of the "creating" state so that the form opens again

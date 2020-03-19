@@ -24,6 +24,13 @@ type State = {
   location: Location | null
 }
 
+/**
+ * HospitalsView
+ *
+ * React component/View
+ *
+ * This view is responsible for loading and displaying a list of hospitals.
+ */
 class HospitalsView extends Component<PublicProps & RouteComponentProps, State> {
   state = {
     loading: true,
@@ -32,11 +39,27 @@ class HospitalsView extends Component<PublicProps & RouteComponentProps, State> 
     location: null,
   }
 
+  /**
+   * ref
+   *
+   * firebase database reference (or null)
+   *
+   * This is the firebase reference we use to interact with the database. We must store a copy of it
+   *  so that we can close out the watcher when the component unmounts. Otherwise, we will have a memory
+   *  leak. Since new database update events will trigger state updates in an unmounted component.
+   *
+   * See componentDidMount for setup
+   * See componentWillUnmount for teardown
+   */
   ref: firebase.database.Reference | null = null
 
   componentDidMount = async () => {
     this.setState({ loading: true })
+
+    //Setup our firebase database reference
     this.ref = firebase.database().ref('hospitals')
+
+    //Add a listener (unregistered in componentWillUnmount)
     this.ref.on('value', snapshot => {
       const val = snapshot.val()
 
@@ -73,14 +96,36 @@ class HospitalsView extends Component<PublicProps & RouteComponentProps, State> 
     firebase.database().ref(`hospitals/${id}`).remove()
   }
 
+  /**
+   * getHospitals()
+   *
+   * function - getter
+   *
+   * Even though hospitals just sit in the state, we have a getter for them.
+   * This is because we want to recalculate distance and resort hospitals every time we render.
+   *  (At least for now since this keeps the state minimal)
+   *
+   * This function returns the raw list if there is no selected location.
+   * If there is a selected locatin, it calculates how far each hospital is from the user's location
+   *  and order the hospitals closest to farthest.
+   */
   getHospitals = () => {
+    // If there's no selected location, just return the list of hospitals.
     if (!this.state.location) return this.state.hospitals
+
+    // Otherwise, we know we have a location
     const location: Location = this.state.location as unknown as Location
 
+    // Map and order here
     return this.state.hospitals
       .map(hospital => {
         return {
           ...hospital,
+
+          // getDistance from geolib returns distance in meters
+          // we want distance in miles
+          // There are 0.000621371 miles per meter
+          // So run the conversion right here
           distanceMiles: 0.000621371 * getDistance({
             latitude: location.lat,
             longitude: location.lng,
