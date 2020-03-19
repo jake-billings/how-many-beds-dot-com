@@ -69,6 +69,7 @@ class HospitalInput extends Component<Props, State> {
           <LocationInput
             initialValue={this.state.hospital.location}
             onChange={this.updateHospitalField('location')}
+            googleMapsSearchOptions={{}}
           />
         </div>
         <div className="col-6">

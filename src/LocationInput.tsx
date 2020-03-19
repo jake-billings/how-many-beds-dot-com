@@ -9,7 +9,8 @@ import PlacesAutocomplete, {
 
 type Props = {
   initialValue: Location
-  onChange: (location: Location | null) => void
+  onChange: (location: Location | null) => void,
+  googleMapsSearchOptions: any
 }
 
 type State = {
@@ -58,6 +59,7 @@ class LocationSearchInput extends Component<Props, State> {
         value={this.state.address}
         onChange={this.handleChange}
         onSelect={this.handleSelect}
+        searchOptions={this.props.googleMapsSearchOptions}
       >
         {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
           <div>
