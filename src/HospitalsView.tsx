@@ -87,7 +87,7 @@ class HospitalsView extends Component<PublicProps & RouteComponentProps, State> 
           }, {
             latitude: hospital.location.lat,
             longitude: hospital.location.lng,
-          })
+          }),
         }
       })
       .sort((a, b) => {
@@ -96,7 +96,7 @@ class HospitalsView extends Component<PublicProps & RouteComponentProps, State> 
   }
 
   onLocationChange = (location: Location | null) => {
-    this.setState({location})
+    this.setState({ location })
   }
 
   render = () => (
