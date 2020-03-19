@@ -8,7 +8,7 @@ import PlacesAutocomplete, {
 } from 'react-places-autocomplete'
 
 type Props = {
-  initialValue: Location
+  initialValue: Location | null
   onChange: (location: Location | null) => void,
   googleMapsSearchOptions: any
 }
@@ -20,7 +20,11 @@ type State = {
 class LocationSearchInput extends Component<Props, State> {
   constructor (props: Props) {
     super(props)
-    this.state = { address: props.initialValue.address }
+    if (props.initialValue) {
+      this.state = { address: props.initialValue.address }
+    } else {
+      this.state = {address: ''}
+    }
   }
 
   handleChange = (address: string) => {
