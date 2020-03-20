@@ -1,21 +1,20 @@
 import React, { Component } from 'react'
 import firebase from './firebase'
-import { Hospital, Location } from './types'
+import { Location, HospitalForUI } from './types'
 import queryString from 'query-string'
-import HospitalUtilizationChart from './HospitalUtilizationChart'
 import { getDistance } from 'geolib'
+import { Row, Col } from 'react-grid-system'
 
 import {
   Link, RouteComponentProps,
 } from 'react-router-dom'
 import LocationSearchInput from './LocationInput'
+import HospitalCard from './components/HospitalCard'
+import Box from './components/Box'
+import Container from './components/Container'
+import Navbar from './components/Navbar'
 
 type PublicProps = {}
-
-interface HospitalForUI extends Hospital {
-  id: string,
-  distanceMiles?: number
-}
 
 type State = {
   loading: boolean,
@@ -76,6 +75,8 @@ class HospitalsView extends Component<PublicProps & RouteComponentProps, State> 
       } else {
         hospitals = []
       }
+
+      console.log(hospitals);
 
       this.setState({
         loading: false,
@@ -146,48 +147,34 @@ class HospitalsView extends Component<PublicProps & RouteComponentProps, State> 
 
   render = () => (
     <>
-      <h1>Hospitals</h1>
-      <h2>Your Location</h2>
-      <LocationSearchInput
-        initialValue={null}
-        onChange={this.onLocationChange}
-        googleMapsSearchOptions={{}}
-      />
-      {this.state.loading && (
-        <p>Loading...</p>
-      )}
-      {this.getHospitals().map((hospital, index) => (
-        <div key={index}>
-          <h2>{hospital.name}</h2>
-          {this.state.isAdmin && (
-            <Link to={`/hospitals/${hospital.id}${this.props.location.search}`}>
-              <button className="btn btn-link">Edit</button>
-            </Link>
-          )}
-
-          {this.state.isAdmin && (
-            <button className="btn btn-link" onClick={this.deleteHospitalById(hospital.id)}>Delete</button>
-          )}
-          <div style={{ width: '300px' }}>
-            <HospitalUtilizationChart
-              hospital={hospital}
-            />
-          </div>
-          <ul>
-            <li>Address: {hospital.location.address}</li>
-            <li>Total Bed Count: {hospital.totalBedCount}</li>
-            <li>Beds Occupied: {hospital.occupiedBedCount}</li>
-            <li>Beds Available: {hospital.totalBedCount - hospital.occupiedBedCount}</li>
-            <li>Utilization: {(hospital.occupiedBedCount / hospital.totalBedCount * 100).toFixed(2)}%</li>
-            {hospital.distanceMiles && (
-              <li>Distance: {hospital.distanceMiles.toFixed(2)} Miles</li>
-            )}
-          </ul>
-        </div>
-      ))}
-      {this.state.isAdmin && (
-        <Link to={`/hospitals/new${this.props.location.search}`}>New</Link>
-      )}
+      <Navbar onLocationChange={this.onLocationChange} />
+      <Container>
+        {this.state.loading && (
+          <p>Loading...</p>
+        )}
+        <Box mv={5}>
+          <Row>
+            <Col md={8}>
+              <Row>
+                {this.getHospitals().map((hospital) => (
+                  <Col sm={6} key={hospital.id}>
+                    <Box mb={3}>
+                      <HospitalCard hospital={hospital} />
+                    </Box>
+                  </Col>
+                ))}
+              </Row>
+            </Col>
+            <Col md={4}>
+              MAP PLACEHOLDER
+            </Col>
+          </Row>
+        </Box>
+        
+        {this.state.isAdmin && (
+          <Link to={`/hospitals/new${this.props.location.search}`}>New</Link>
+        )}
+      </Container>
     </>
   )
 }

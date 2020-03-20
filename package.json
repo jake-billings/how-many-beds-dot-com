@@ -10,18 +10,18 @@
     "@types/react-numeric-input": "^2.2.3",
     "@types/react-places-autocomplete": "^7.2.6",
     "@types/react-router-dom": "^5.1.3",
-    "bootstrap": "^4.4.1",
     "firebase": "^7.11.0",
     "geolib": "^3.2.1",
     "jquery": "^3.4.1",
     "query-string": "^6.11.1",
     "react": "^16.13.0",
-    "react-bootstrap": "^1.0.0-beta.17",
     "react-dom": "^16.13.0",
+    "react-grid-system": "^6.3.0",
     "react-numeric-input": "^2.2.3",
     "react-places-autocomplete": "^7.2.1",
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.4.0",
+    "styled-components": "^5.0.1",
     "victory": "^34.1.3"
   },
   "scripts": {
@@ -47,6 +47,7 @@
     ]
   },
   "devDependencies": {
+    "@types/styled-components": "^5.0.1",
     "typescript": "^3.8.3"
   }
 }

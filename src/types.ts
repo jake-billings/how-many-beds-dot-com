@@ -5,6 +5,11 @@ export type Location = {
   lng: number
 }
 
+export interface HospitalForUI extends Hospital {
+  id: string,
+  distanceMiles?: number
+}
+
 export const validateLocation = (place: Location): string[] => {
   const validationErrors = [];
   if (place.address.trim() === '') validationErrors.push('Location address cannot be empty.')
