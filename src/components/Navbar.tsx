@@ -51,7 +51,7 @@ const Navbar: React.SFC<NavbarProps> = ({
           <LocationSearchInput
             initialValue={null}
             onChange={onLocationChange}
-            googleMapsSearchOptions={{}}
+            googleMapsSearchOptions={{types: ['(cities)']}}
           />
         </Col>
         <Grow />
