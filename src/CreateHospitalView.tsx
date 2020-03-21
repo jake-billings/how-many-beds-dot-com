@@ -120,7 +120,7 @@ class CreateHospitalView extends Component<PublicProps & RouteComponentProps, St
         <Box mv={5}>
           <Container>
             <Row>
-              <Col sm={6} offset={{ sm: 3 }}>
+              <Col sm={8} offset={{ sm: 2 }}>
                 <Box mb={2}>
                   <Header1>Create Hospital</Header1>
                 </Box>

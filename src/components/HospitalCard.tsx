@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Row, Col } from 'react-grid-system'
+import { Link } from 'react-router-dom'
 
 import HospitalUtilizationChart from './HospitalUtilizationChart'
 
@@ -35,22 +36,24 @@ const StyledStatisticByline = styled.p`
   text-transform: uppercase;
 `
 
-const StyledDirectionsLink = styled.a`
+const StyledCardLink = styled.a`
   color: ${colors.blue};
   cursor: pointer;
   text-decoration: none;
 `
 
 type HospitalCardProps = {
-  hospital: HospitalForUI
+  hospital: HospitalForUI,
+  editHospitalLink: string | false
+  onDeleteHospital: ((e: any) => void) | false
 }
 
-const GOOGLE_MAPS_URL = 'https://www.google.com/maps/dir/?api=1';
+const GOOGLE_MAPS_URL = 'https://www.google.com/maps/dir/?api=1'
 
-const generateDirectionsUrl = (hospital: HospitalForUI): string => 
+const generateDirectionsUrl = (hospital: HospitalForUI): string =>
   `${GOOGLE_MAPS_URL}&destination=${hospital.name}&destination_place_id=${hospital.location.googleMapsPlaceId}`
 
-const HospitalCard: React.SFC<HospitalCardProps> = ({ hospital }) => (
+const HospitalCard: React.SFC<HospitalCardProps> = ({ hospital, editHospitalLink, onDeleteHospital }) => (
   <Card>
     <Flex>
       <div>
@@ -59,10 +62,10 @@ const HospitalCard: React.SFC<HospitalCardProps> = ({ hospital }) => (
         </Box>
         <StyledCardByline>{hospital.location.address}</StyledCardByline>
       </div>
-      <Grow />
+      <Grow/>
       {hospital.distanceMiles && <StyledCardByline>{hospital.distanceMiles.toFixed(2)} miles</StyledCardByline>}
     </Flex>
-    <Row  align="center">
+    <Row align="center">
       <Col xs={8}>
         <HospitalUtilizationChart
           hospital={hospital}
@@ -85,10 +88,24 @@ const HospitalCard: React.SFC<HospitalCardProps> = ({ hospital }) => (
     </Row>
     <Box mt={3}>
       <Flex>
-        <Grow />
-        <StyledDirectionsLink
+        {editHospitalLink && (
+          <Link to={editHospitalLink} style={{ textDecoration: 'none', marginRight: '15px' }}>
+            <StyledCardLink>
+              Edit
+            </StyledCardLink>
+          </Link>
+        )}
+        {onDeleteHospital && (
+          <StyledCardLink
+            onClick={onDeleteHospital}
+          >
+            Delete
+          </StyledCardLink>
+        )}
+        <Grow/>
+        <StyledCardLink
           onClick={() => window.open(generateDirectionsUrl(hospital), '_blank')}
-        >Get Directions</StyledDirectionsLink>
+        >Get Directions</StyledCardLink>
       </Flex>
     </Box>
   </Card>

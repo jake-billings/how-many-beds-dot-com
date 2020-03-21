@@ -1,14 +1,17 @@
 import React, { Component, FormEvent } from 'react'
-import { Hospital, validateHospital } from './types'
-import HospitalInput from './HospitalInput'
-import firebase from './firebase'
 import { RouteComponentProps } from 'react-router'
+import { Row, Col } from 'react-grid-system'
+
 import Navbar from './components/Navbar'
 import { Header1, Text } from './components/type'
 import Container from './components/Container'
 import Box from './components/Box'
 import Card from './components/Card'
 import Button from './components/Button'
+
+import { Hospital, validateHospital } from './types'
+import HospitalInput from './HospitalInput'
+import firebase from './firebase'
 
 type PublicProps = {}
 
@@ -161,44 +164,46 @@ class EditHospitalView extends Component<PublicProps & RouteComponentProps<{ hos
         <Navbar />
         <Box mv={5}>
           <Container>
-            <Box mb={2}>
-              <Header1>Edit Hospital</Header1>
-            </Box>
-            <Card>
-              {this.state.loading && <Text>Loading...</Text>}
-              {!this.state.loading && !this.state.loaded && <Text>Problem loading</Text>}
-              {this.state.loaded && (
-                <div>
-                  <form onSubmit={this.save}>
-                    <HospitalInput
-                      initialValue={this.state.hospital}
-                      onChange={this.onChangeToHospital}
-                    />
-                    {this.getHospitalValidationErrors().length > 0 && (
-                      <>
-                        <ul>
-                          {this.getHospitalValidationErrors().map(error => (
-                            <li key={error}>
-                              {error}
-                            </li>
-                          ))}
-                        </ul>
-                      </>
-                    )}
-                    <div className="form-row">
-                      <div className="col-1">
-                        <Button
-                          type="submit"
-                          className="btn btn-primary"
-                          value="Save"
-                          disabled={!this.canSave()}
+            <Row>
+              <Col sm={8} offset={{ sm: 2 }}>
+                <Box mb={2}>
+                  <Header1>Edit Hospital</Header1>
+                </Box>
+                <Card>
+                  {this.state.loading && <Text>Loading...</Text>}
+                  {!this.state.loading && !this.state.loaded && <Text>Problem loading</Text>}
+                  {this.state.loaded && (
+                    <div>
+                      <form onSubmit={this.save}>
+                        <HospitalInput
+                          initialValue={this.state.hospital}
+                          onChange={this.onChangeToHospital}
                         />
-                      </div>
+                        {this.getHospitalValidationErrors().length > 0 && (
+                          <>
+                            <ul>
+                              {this.getHospitalValidationErrors().map(error => (
+                                <li key={error}>
+                                  {error}
+                                </li>
+                              ))}
+                            </ul>
+                          </>
+                        )}
+                        <div className="form-row">
+                          <div className="col-1">
+                            <Button
+                              type="submit"
+                              disabled={!this.canSave()}
+                            >Save</Button>
+                          </div>
+                        </div>
+                      </form>
                     </div>
-                  </form>
-                </div>
-              )}
-            </Card>
+                  )}
+                </Card>
+              </Col>
+            </Row>
           </Container>
         </Box>
       </>

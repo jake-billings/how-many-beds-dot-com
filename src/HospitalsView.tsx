@@ -12,6 +12,7 @@ import HospitalCard from './components/HospitalCard'
 import Box from './components/Box'
 import Container from './components/Container'
 import Navbar from './components/Navbar'
+import HospitalMap from './components/HospitalMap'
 
 type PublicProps = {}
 
@@ -162,14 +163,21 @@ class HospitalsView extends Component<PublicProps & RouteComponentProps, State> 
                 {this.getHospitals().map((hospital) => (
                   <Col sm={6} key={hospital.id}>
                     <Box mb={3}>
-                      <HospitalCard hospital={hospital} />
+                      <HospitalCard
+                        hospital={hospital}
+                        editHospitalLink={this.state.isAdmin && `/hospitals/${hospital.id}${this.props.location.search}`}
+                        onDeleteHospital={this.state.isAdmin && this.deleteHospitalById(hospital.id)}
+                      />
                     </Box>
                   </Col>
                 ))}
               </Row>
             </Col>
             <Col md={4}>
-              MAP PLACEHOLDER
+              <HospitalMap
+                location={this.state.location}
+                hospitals={this.state.hospitals}
+              />
             </Col>
           </Row>
         </Box>
