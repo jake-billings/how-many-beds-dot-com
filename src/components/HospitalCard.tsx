@@ -57,7 +57,7 @@ const StyledCardLink = styled.a`
 type HospitalCardProps = {
   hospital: HospitalForUI,
   editHospitalLink: string | false
-  onDeleteHospital: (e: any) => void
+  onDeleteHospital: ((e: any) => void) | false
 }
 
 const GOOGLE_MAPS_URL = 'https://www.google.com/maps/dir/?api=1'

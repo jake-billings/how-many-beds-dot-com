@@ -166,7 +166,7 @@ class HospitalsView extends Component<PublicProps & RouteComponentProps, State> 
                       <HospitalCard
                         hospital={hospital}
                         editHospitalLink={this.state.isAdmin && `/hospitals/${hospital.id}${this.props.location.search}`}
-                        onDeleteHospital={this.deleteHospitalById(hospital.id)}
+                        onDeleteHospital={this.state.isAdmin && this.deleteHospitalById(hospital.id)}
                       />
                     </Box>
                   </Col>
