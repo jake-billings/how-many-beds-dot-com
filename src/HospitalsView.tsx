@@ -159,7 +159,10 @@ class HospitalsView extends Component<PublicProps & RouteComponentProps, State> 
                 {this.getHospitals().map((hospital) => (
                   <Col sm={6} key={hospital.id}>
                     <Box mb={3}>
-                      <HospitalCard hospital={hospital} />
+                      <HospitalCard
+                        hospital={hospital}
+                        editHospitalLink={this.state.isAdmin && `/hospitals/${hospital.id}${this.props.location.search}`}
+                      />
                     </Box>
                   </Col>
                 ))}
