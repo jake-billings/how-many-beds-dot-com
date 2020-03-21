@@ -57,6 +57,7 @@ const StyledCardLink = styled.a`
 type HospitalCardProps = {
   hospital: HospitalForUI,
   editHospitalLink: string | false
+  onDeleteHospital: (e: any) => void
 }
 
 const GOOGLE_MAPS_URL = 'https://www.google.com/maps/dir/?api=1'
@@ -64,7 +65,7 @@ const GOOGLE_MAPS_URL = 'https://www.google.com/maps/dir/?api=1'
 const generateDirectionsUrl = (hospital: HospitalForUI): string =>
   `${GOOGLE_MAPS_URL}&destination=${hospital.name}&destination_place_id=${hospital.location.googleMapsPlaceId}`
 
-const HospitalCard: React.SFC<HospitalCardProps> = ({ hospital, editHospitalLink }) => (
+const HospitalCard: React.SFC<HospitalCardProps> = ({ hospital, editHospitalLink, onDeleteHospital }) => (
   <StyledHospitalCard>
     <Flex>
       <div>
@@ -101,11 +102,19 @@ const HospitalCard: React.SFC<HospitalCardProps> = ({ hospital, editHospitalLink
       <Flex>
         {editHospitalLink && (
 
-          <Link to={editHospitalLink} style={{textDecoration: 'none'}}>
+          <Link to={editHospitalLink} style={{ textDecoration: 'none', marginRight: '15px' }}>
             <StyledCardLink>
               Edit
             </StyledCardLink>
           </Link>
+
+        )}
+        {onDeleteHospital && (
+          <StyledCardLink
+            onClick={onDeleteHospital}
+          >
+            Delete
+          </StyledCardLink>
 
         )}
         <Grow/>
