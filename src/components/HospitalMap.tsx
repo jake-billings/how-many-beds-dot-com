@@ -24,10 +24,6 @@ const HospitalMap = ({ hospitals, location }: { hospitals: HospitalForUI[], loca
   <>
     <div style={{ height: '100%', width: '100%' }}>
       <GoogleMapReact
-        defaultCenter={{
-          lat: (location || DEFAULT_LAT_LNG).lat,
-          lng: (location || DEFAULT_LAT_LNG).lng,
-        }}
         center={{
           lat: (location || DEFAULT_LAT_LNG).lat,
           lng: (location || DEFAULT_LAT_LNG).lng,
@@ -38,6 +34,7 @@ const HospitalMap = ({ hospitals, location }: { hospitals: HospitalForUI[], loca
         {
           hospitals.map(hospital => (
             <HospitalMarker
+              key={hospital.id}
               lat={hospital.location.lat}
               lng={hospital.location.lng}
               name={hospital.name}
