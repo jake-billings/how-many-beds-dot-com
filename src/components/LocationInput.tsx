@@ -128,7 +128,7 @@ class LocationSearchInput extends Component<Props, State> {
           <StyledLocationInputWrapper>
             <StyledLocationInput
               {...getInputProps({
-                placeholder: 'Search Places ...',
+                placeholder: 'Search Places',
               })}
             />
             {(loading || suggestions.length > 0) && (
