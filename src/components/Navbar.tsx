@@ -5,13 +5,14 @@ import { Row, Col } from 'react-grid-system'
 import { Location } from '../types'
 import { colors } from './variables'
 import Container from './Container';
-import LocationSearchInput from '../LocationInput';
+import LocationSearchInput from './LocationInput';
 
 const StyledNavbar = styled.div`
   align-items: center;
   background-color: ${colors.blue};
   display: flex;
   height: 60px;
+  z-index: -1;
 `;
 
 const StyledNavbarHeader = styled.h3`

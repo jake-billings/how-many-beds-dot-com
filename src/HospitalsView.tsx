@@ -8,7 +8,6 @@ import { Row, Col } from 'react-grid-system'
 import {
   Link, RouteComponentProps,
 } from 'react-router-dom'
-import LocationSearchInput from './LocationInput'
 import HospitalCard from './components/HospitalCard'
 import Box from './components/Box'
 import Container from './components/Container'
