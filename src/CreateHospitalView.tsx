@@ -1,8 +1,16 @@
 import React, { Component, FormEvent } from 'react'
+import { RouteComponentProps } from 'react-router'
+import { Row, Col } from 'react-grid-system'
+
 import { Hospital, validateHospital } from './types'
 import HospitalInput from './HospitalInput'
 import firebase from './firebase'
-import { RouteComponentProps } from 'react-router'
+import Navbar from './components/Navbar'
+import Container from './components/Container'
+import Box from './components/Box'
+import Card from './components/Card'
+import Button from './components/Button'
+import { Header1, Header3 } from './components/type'
 
 type PublicProps = {}
 
@@ -108,36 +116,45 @@ class CreateHospitalView extends Component<PublicProps & RouteComponentProps, St
   render () {
     return (
       <>
-        <h1>Create Hospital</h1>
-        <div>
-          <form onSubmit={this.create}>
-            <HospitalInput
-              initialValue={this.state.hospital}
-              onChange={this.onChangeToHospital}
-            />
-            {this.state.attemptedCreate && (
-              <>
-                <ul>
-                  {this.getHospitalValidationErrors().map(error => (
-                    <li key={error}>
-                      {error}
-                    </li>
-                  ))}
-                </ul>
-              </>
-            )}
-            <div className="form-row">
-              <div className="col-1">
-                <input
-                  type="submit"
-                  className="btn btn-primary"
-                  value="Create"
-                  disabled={!this.canCreate()}
-                />
-              </div>
-            </div>
-          </form>
-        </div>
+        <Navbar />
+        <Box mv={5}>
+          <Container>
+            <Row>
+              <Col sm={6} offset={{ sm: 3 }}>
+                <Box mb={2}>
+                  <Header1>Create Hospital</Header1>
+                </Box>
+                <Card>
+                  <form onSubmit={this.create}>
+                    <HospitalInput
+                      initialValue={this.state.hospital}
+                      onChange={this.onChangeToHospital}
+                    />
+                    {this.state.attemptedCreate && (
+                      <>
+                        <ul>
+                          {this.getHospitalValidationErrors().map(error => (
+                            <li key={error}>
+                              {error}
+                            </li>
+                          ))}
+                        </ul>
+                      </>
+                    )}
+                    <div className="form-row">
+                      <div className="col-1">
+                        <Button
+                          type="submit"
+                          disabled={!this.canCreate()}
+                        >Create</Button>
+                      </div>
+                    </div>
+                  </form>
+                </Card>
+              </Col>
+            </Row>
+          </Container>
+        </Box>
       </>
     )
   }

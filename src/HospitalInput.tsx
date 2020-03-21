@@ -1,6 +1,9 @@
 import React, { Component } from 'react'
-import NumericInput from 'react-numeric-input'
+import { Row, Col } from 'react-grid-system'
+
 import LocationInput from './components/LocationInput'
+import { Input, InputLabel, StyledNumericInput } from './components/Input'
+import Box from './components/Box'
 
 import { Hospital } from './types'
 
@@ -102,47 +105,53 @@ class HospitalInput extends Component<Props, State> {
 
   render () {
     return (
-      <div className="form-row my-2">
-        <div className="col-6">
-          <label>Name</label>
-          <input type="text"
-                 className="form-control"
-                 placeholder="Medical facilities name"
-                 value={this.state.hospital.name}
-                 onChange={this.updateHospitalFieldWithEvent('name')}
-          />
-        </div>
-        <div className="col-6">
-          <label>Address</label>
-
-          <LocationInput
-            initialValue={this.state.hospital.location}
-            onChange={this.updateHospitalField('location')}
-            googleMapsSearchOptions={{}}
-          />
-        </div>
-        <div className="col-6">
-          <label>Total Bed Count</label>
-          <NumericInput
-            type="number"
-            className="form-control"
-            placeholder="500"
-            min={0}
-            value={this.state.hospital.totalBedCount}
-            onChange={this.updateHospitalField('totalBedCount')}/>
-        </div>
-        <div className="col-6">
-          <label>Occupied Bed Count</label>
-          <NumericInput
-            type="number"
-            className="form-control"
-            placeholder="0"
-            min={0}
-            max={this.state.hospital.totalBedCount}
-            value={this.state.hospital.occupiedBedCount}
-            onChange={this.updateHospitalField('occupiedBedCount')}/>
-        </div>
-      </div>
+      <Box pa={1}>
+        <Box mb={3}>
+          <Row>
+            <Col sm={6}>
+              <InputLabel>Name</InputLabel>
+              <Input
+                type="text"
+                placeholder="Medical facilities name"
+                value={this.state.hospital.name}
+                onChange={this.updateHospitalFieldWithEvent('name')}
+              />
+            </Col>
+            <Col sm={6}>
+              <InputLabel>Address</InputLabel>
+              <LocationInput
+                inverse
+                initialValue={this.state.hospital.location}
+                onChange={this.updateHospitalField('location')}
+                googleMapsSearchOptions={{}}
+              />
+            </Col>
+          </Row>
+        </Box>
+        <Row>
+          <Col sm={6}>
+            <InputLabel>Total Bed Count</InputLabel>
+            <StyledNumericInput
+              type="number"
+              placeholder="500"
+              min={0}
+              value={this.state.hospital.totalBedCount}
+              onChange={this.updateHospitalField('totalBedCount')}
+            />
+          </Col>
+          <Col sm={6}>
+            <InputLabel>Occupied Bed Count</InputLabel>
+            <StyledNumericInput
+              type="number"
+              placeholder="0"
+              min={0}
+              max={this.state.hospital.totalBedCount}
+              value={this.state.hospital.occupiedBedCount}
+              onChange={this.updateHospitalField('occupiedBedCount')}
+            />
+          </Col>
+        </Row>
+      </Box>
     )
   }
 }

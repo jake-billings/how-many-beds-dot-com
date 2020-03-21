@@ -17,10 +17,11 @@ const StyledNavbar = styled.div`
   z-index: -1;
 `;
 
-const StyledNavbarHeader = styled.h3`
+const StyledNavbarHeader = styled(Link)`
   color: ${colors.white};
   font-size: 16px;
   font-weight: 700;
+  text-decoration: none;
 `;
 
 const StyledNavLink = styled(Link)`
@@ -29,7 +30,7 @@ const StyledNavLink = styled(Link)`
 `;
 
 type NavbarProps = {
-  onLocationChange: (location: Location | null) => void,
+  onLocationChange?: (location: Location | null) => void,
   canCreateNewHospital?: boolean,
   searchQuery?: string
 }
@@ -43,17 +44,19 @@ const Navbar: React.SFC<NavbarProps> = ({
     <Container>
       <Row align="center">
         <Col sm={3}>
-          <StyledNavbarHeader>
+          <StyledNavbarHeader to="/">
             HowManyBeds.com
           </StyledNavbarHeader>
         </Col>
-        <Col sm={6}>
-          <LocationSearchInput
-            initialValue={null}
-            onChange={onLocationChange}
-            googleMapsSearchOptions={{}}
-          />
-        </Col>
+        {onLocationChange && (
+          <Col sm={6}>
+            <LocationSearchInput
+              initialValue={null}
+              onChange={onLocationChange}
+              googleMapsSearchOptions={{}}
+            />
+          </Col>
+        )}
         <Grow />
         {canCreateNewHospital && (
           <StyledNavLink to={`/hospitals/new${searchQuery}`}>New Hospital</StyledNavLink>

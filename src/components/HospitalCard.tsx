@@ -2,26 +2,15 @@ import React from 'react'
 import styled from 'styled-components'
 import { Row, Col } from 'react-grid-system'
 
+import HospitalUtilizationChart from './HospitalUtilizationChart'
+
 import { colors } from './variables'
 import Box from './Box'
 import { Flex, Grow } from './Flex'
+import Card from './Card'
+import { Header3 } from './type'
 
 import { HospitalForUI } from '../types'
-import HospitalUtilizationChart from './HospitalUtilizationChart'
-
-const StyledHospitalCard = styled.div`
-  background-color: ${colors.white};
-  border: solid 1px ${colors.snow};
-  border-radius: 8px;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-  padding: 16px;
-`
-
-const StyledCardHeader = styled.h3`
-  color: ${colors.black};
-  font-size: 20px;
-  font-weight: 500;
-`
 
 const StyledCardByline = styled.p`
   color: ${colors.gray};
@@ -62,11 +51,11 @@ const generateDirectionsUrl = (hospital: HospitalForUI): string =>
   `${GOOGLE_MAPS_URL}&destination=${hospital.name}&destination_place_id=${hospital.location.googleMapsPlaceId}`
 
 const HospitalCard: React.SFC<HospitalCardProps> = ({ hospital }) => (
-  <StyledHospitalCard>
+  <Card>
     <Flex>
       <div>
         <Box mb={.5}>
-          <StyledCardHeader>{hospital.name}</StyledCardHeader>
+          <Header3>{hospital.name}</Header3>
         </Box>
         <StyledCardByline>{hospital.location.address}</StyledCardByline>
       </div>
@@ -102,7 +91,7 @@ const HospitalCard: React.SFC<HospitalCardProps> = ({ hospital }) => (
         >Get Directions</StyledDirectionsLink>
       </Flex>
     </Box>
-  </StyledHospitalCard>
+  </Card>
 )
 
 export default HospitalCard

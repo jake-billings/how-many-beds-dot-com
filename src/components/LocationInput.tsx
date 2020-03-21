@@ -13,15 +13,19 @@ const StyledLocationInputWrapper = styled.div`
   width: 100%;
 `
 
-const StyledLocationInput = styled.input`
+type StyledLocationProps = {
+  inverse?: boolean
+}
+
+const StyledLocationInput = styled.input<StyledLocationProps>`
   background-color: rgba(255, 255, 255, .2);
-  border: none;
+  border: ${({ inverse }) => inverse ? `solid 1px ${colors.snow}` : 'none'};
   border-radius: 8px;
-  color: ${colors.white};
+  color: ${({ inverse }) => inverse ? colors.black : colors.white};
   font-family: ${fontFamily};
   font-size: 16px;
-  padding: 8px 16px;
-  width: 100%;
+  padding: 8px 12px;
+  width: calc(100% - 24px);
   &:focus {
     background-color: rgba(255, 255, 255, .4);
     outline: none;
@@ -42,10 +46,10 @@ const StyledLocationOptions = styled.div`
   background-color: ${colors.white};
   border: none;
   border-radius: 8px;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   padding: 8px;
   position: absolute;
-  width: 100%;
+  width: calc(100% - 16px);
   z-index: 9999;
 `
 
@@ -59,7 +63,8 @@ const StyledLocationOption = styled.p`
 type Props = {
   initialValue: Location | null
   onChange: (location: Location | null) => void,
-  googleMapsSearchOptions: any
+  googleMapsSearchOptions: any,
+  inverse?: boolean
 }
 
 type State = {
@@ -126,7 +131,7 @@ class LocationSearchInput extends Component<Props, State> {
       >
         {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
           <StyledLocationInputWrapper>
-            <StyledLocationInput
+            <StyledLocationInput inverse={this.props.inverse}
               {...getInputProps({
                 placeholder: 'Search Places',
               })}
