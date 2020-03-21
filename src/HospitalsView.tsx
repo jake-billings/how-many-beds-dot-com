@@ -12,6 +12,7 @@ import HospitalCard from './components/HospitalCard'
 import Box from './components/Box'
 import Container from './components/Container'
 import Navbar from './components/Navbar'
+import HospitalMap from './components/HospitalMap'
 
 type PublicProps = {}
 
@@ -173,7 +174,10 @@ class HospitalsView extends Component<PublicProps & RouteComponentProps, State> 
               </Row>
             </Col>
             <Col md={4}>
-              MAP PLACEHOLDER
+              <HospitalMap
+                location={this.state.location}
+                hospitals={this.state.hospitals}
+              />
             </Col>
           </Row>
         </Box>
