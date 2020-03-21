@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import NumericInput from 'react-numeric-input'
-import LocationInput from './LocationInput'
+import LocationInput from './components/LocationInput'
 
 import { Hospital } from './types'
 

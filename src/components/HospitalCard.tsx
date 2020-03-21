@@ -37,6 +37,7 @@ const StyledCardByline = styled.p`
 const StyledStatisticValue = styled.h3<{ primary?: boolean }>`
   color: ${({ primary }) => primary ? colors.green : colors.black};
   font-size: 20px;
+  font-weight: 400;
 `
 
 const StyledStatisticByline = styled.p`

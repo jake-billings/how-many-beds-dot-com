@@ -6,9 +6,8 @@ import { getDistance } from 'geolib'
 import { Row, Col } from 'react-grid-system'
 
 import {
-  Link, RouteComponentProps,
+  RouteComponentProps,
 } from 'react-router-dom'
-import LocationSearchInput from './LocationInput'
 import HospitalCard from './components/HospitalCard'
 import Box from './components/Box'
 import Container from './components/Container'
@@ -147,7 +146,11 @@ class HospitalsView extends Component<PublicProps & RouteComponentProps, State> 
 
   render = () => (
     <>
-      <Navbar onLocationChange={this.onLocationChange} />
+      <Navbar
+        onLocationChange={this.onLocationChange}
+        canCreateNewHospital={this.state.isAdmin}
+        searchQuery={this.props.location.search}
+      />
       <Container>
         {this.state.loading && (
           <p>Loading...</p>
@@ -173,10 +176,6 @@ class HospitalsView extends Component<PublicProps & RouteComponentProps, State> 
             </Col>
           </Row>
         </Box>
-        
-        {this.state.isAdmin && (
-          <Link to={`/hospitals/new${this.props.location.search}`}>New</Link>
-        )}
       </Container>
     </>
   )
