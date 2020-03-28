@@ -7,7 +7,8 @@ import { Location } from '../types'
 import { colors } from './variables'
 import Container from './Container';
 import { Grow } from './Flex'
-import LocationSearchInput from './LocationInput';
+import LocationSearchInput from './LocationInput'
+import SignInOutButton from '../SignInOutButton'
 
 const StyledNavbar = styled.div`
   align-items: center;
@@ -61,6 +62,8 @@ const Navbar: React.SFC<NavbarProps> = ({
         {canCreateNewHospital && (
           <StyledNavLink to={`/hospitals/new${searchQuery}`}>New Hospital</StyledNavLink>
         )}
+        <SignInOutButton/>
+
       </Row>
     </Container>
   </StyledNavbar>
