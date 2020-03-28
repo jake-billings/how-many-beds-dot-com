@@ -39,3 +39,9 @@ export const validateHospital = (hospital: Hospital): string[] => {
   if (hospital.occupiedBedCount > hospital.totalBedCount) validationErrors.push('Occupied bed cannot be greater than total bed count.')
   return validationErrors;
 }
+
+export type User = {
+  lastSignedIn: Date
+  editorOf: string
+  isAdmin: boolean
+}
