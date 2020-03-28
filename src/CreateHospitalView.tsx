@@ -1,5 +1,5 @@
 import React, { Component, FormEvent } from 'react'
-import { RouteComponentProps } from 'react-router'
+import { Redirect, RouteComponentProps } from 'react-router'
 import { Row, Col } from 'react-grid-system'
 
 import { Hospital, validateHospital } from './types'
@@ -11,10 +11,13 @@ import Box from './components/Box'
 import Card from './components/Card'
 import Button from './components/Button'
 import { Header1, Header3 } from './components/type'
+import { Unsubscribe } from 'firebase'
 
 type PublicProps = {}
 
 type State = {
+  loading: boolean,
+  isSignedIn: boolean,
   creating: boolean,
   attemptedCreate: boolean,
   created: boolean,
@@ -30,6 +33,8 @@ type State = {
  */
 class CreateHospitalView extends Component<PublicProps & RouteComponentProps, State> {
   state = {
+    loading: true,
+    isSignedIn: false,
     creating: false,
     attemptedCreate: false,
     created: false,
@@ -44,6 +49,22 @@ class CreateHospitalView extends Component<PublicProps & RouteComponentProps, St
       totalBedCount: 0,
       occupiedBedCount: 0,
     },
+  }
+
+  unregisterAuthObserver: Unsubscribe | undefined = undefined
+
+  // Listen to the Firebase Auth state and set the local state.
+  componentDidMount () {
+    this.unregisterAuthObserver = firebase
+      .auth()
+      .onAuthStateChanged((firebaseAuthUser) => {
+        this.setState({ isSignedIn: !!firebaseAuthUser, loading: false })
+      })
+  }
+
+  // Make sure we un-register Firebase observers when the component unmounts.
+  componentWillUnmount () {
+    if (this.unregisterAuthObserver) this.unregisterAuthObserver()
   }
 
   /**
@@ -116,45 +137,59 @@ class CreateHospitalView extends Component<PublicProps & RouteComponentProps, St
   render () {
     return (
       <>
-        <Navbar />
-        <Box mv={5}>
-          <Container>
-            <Row>
-              <Col sm={8} offset={{ sm: 2 }}>
-                <Box mb={2}>
-                  <Header1>Create Hospital</Header1>
+        {this.state.loading && (
+          <p>Loading...</p>
+        )}
+        {!this.state.loading && (
+          <>
+            {!this.state.isSignedIn && (
+              <Redirect to="/"/>
+            )}
+            {this.state.isSignedIn && (
+              <>
+                <Navbar/>
+                <Box mv={5}>
+                  <Container>
+                    <Row>
+                      <Col sm={8} offset={{ sm: 2 }}>
+                        <Box mb={2}>
+                          <Header1>Create Hospital</Header1>
+                        </Box>
+                        <Card>
+                          <form onSubmit={this.create}>
+                            <HospitalInput
+                              initialValue={this.state.hospital}
+                              onChange={this.onChangeToHospital}
+                            />
+                            {this.state.attemptedCreate && (
+                              <>
+                                <ul>
+                                  {this.getHospitalValidationErrors().map(error => (
+                                    <li key={error}>
+                                      {error}
+                                    </li>
+                                  ))}
+                                </ul>
+                              </>
+                            )}
+                            <div className="form-row">
+                              <div className="col-1">
+                                <Button
+                                  type="submit"
+                                  disabled={!this.canCreate()}
+                                >Create</Button>
+                              </div>
+                            </div>
+                          </form>
+                        </Card>
+                      </Col>
+                    </Row>
+                  </Container>
                 </Box>
-                <Card>
-                  <form onSubmit={this.create}>
-                    <HospitalInput
-                      initialValue={this.state.hospital}
-                      onChange={this.onChangeToHospital}
-                    />
-                    {this.state.attemptedCreate && (
-                      <>
-                        <ul>
-                          {this.getHospitalValidationErrors().map(error => (
-                            <li key={error}>
-                              {error}
-                            </li>
-                          ))}
-                        </ul>
-                      </>
-                    )}
-                    <div className="form-row">
-                      <div className="col-1">
-                        <Button
-                          type="submit"
-                          disabled={!this.canCreate()}
-                        >Create</Button>
-                      </div>
-                    </div>
-                  </form>
-                </Card>
-              </Col>
-            </Row>
-          </Container>
-        </Box>
+              </>
+            )}
+          </>
+        )}
       </>
     )
   }

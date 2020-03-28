@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import firebase from './firebase'
-import { Location, HospitalForUI } from './types'
+import { Location, HospitalForUI, User } from './types'
 import queryString from 'query-string'
 import { getDistance } from 'geolib'
 import { Row, Col } from 'react-grid-system'
@@ -13,14 +13,15 @@ import Box from './components/Box'
 import Container from './components/Container'
 import Navbar from './components/Navbar'
 import HospitalMap from './components/HospitalMap'
+import { Unsubscribe } from 'firebase'
 
 type PublicProps = {}
 
 type State = {
-  loading: boolean,
+  loadings: boolean,
   hospitals: HospitalForUI[],
-  isAdmin: boolean
   location: Location | null
+  user: User | null
 }
 
 /**
@@ -32,10 +33,10 @@ type State = {
  */
 class HospitalsView extends Component<PublicProps & RouteComponentProps, State> {
   state = {
-    loading: true,
+    loadings: true,
     hospitals: [] as HospitalForUI[],
-    isAdmin: false,
     location: null,
+    user: null,
   }
 
   /**
@@ -50,16 +51,20 @@ class HospitalsView extends Component<PublicProps & RouteComponentProps, State> 
    * See componentDidMount for setup
    * See componentWillUnmount for teardown
    */
-  ref: firebase.database.Reference | null = null
+  hospitalRef: firebase.database.Reference | null = null
+
+  unregisterAuthObserver: Unsubscribe | null | undefined = undefined
+
+  userRef: firebase.database.Reference | null = null
 
   componentDidMount = async () => {
-    this.setState({ loading: true })
+    this.setState({ loadings: true })
 
     //Setup our firebase database reference
-    this.ref = firebase.database().ref('hospitals')
+    this.hospitalRef = firebase.database().ref('hospitals')
 
     //Add a listener (unregistered in componentWillUnmount)
-    this.ref.on('value', snapshot => {
+    this.hospitalRef.on('value', snapshot => {
       const val = snapshot.val()
 
       let hospitals: HospitalForUI[]
@@ -76,21 +81,36 @@ class HospitalsView extends Component<PublicProps & RouteComponentProps, State> 
         hospitals = []
       }
 
-      console.log(hospitals);
-
       this.setState({
-        loading: false,
+        loadings: false,
         hospitals,
       })
     })
 
-    if (queryString.parse(this.props.location.search).admin) {
-      this.setState({ isAdmin: true })
-    }
+    this.unregisterAuthObserver = firebase
+      .auth()
+      .onAuthStateChanged((firebaseAuthUser) => {
+          if (firebaseAuthUser && firebaseAuthUser.uid) {
+            if (this.userRef) this.userRef.off()
+
+            this.userRef = firebase.database().ref(`users/${firebaseAuthUser.uid}`)
+
+            this.userRef.on('value', (ref) => {
+              const val: User = ref.val() as User
+
+              this.setState({ user: val })
+            })
+          } else {
+            this.setState({ user: null })
+          }
+        },
+      )
   }
 
   componentWillUnmount = () => {
-    if (this.ref) this.ref.off()
+    if (this.hospitalRef) this.hospitalRef.off()
+    if (this.userRef) this.userRef.off()
+    if (this.unregisterAuthObserver) this.unregisterAuthObserver()
   }
 
   deleteHospitalById = (id: string) => (e: any) => {
@@ -145,15 +165,26 @@ class HospitalsView extends Component<PublicProps & RouteComponentProps, State> 
     this.setState({ location })
   }
 
+  isSignedIn = () => !!this.state.user
+
+  canCreateHospital = () => this.isSignedIn()
+    && (this.state.user as unknown as User).isAdmin
+
+  canEditHospital = (hospitalId: string) => this.isSignedIn()
+    && (
+      ((this.state.user as unknown as User).editorOf === hospitalId)
+      || (this.state.user as unknown as User).isAdmin
+    )
+
   render = () => (
     <>
       <Navbar
         onLocationChange={this.onLocationChange}
-        canCreateNewHospital={this.state.isAdmin}
+        canCreateNewHospital={this.canCreateHospital()}
         searchQuery={this.props.location.search}
       />
       <Container>
-        {this.state.loading && (
+        {this.state.loadings && (
           <p>Loading...</p>
         )}
         <Box mv={5}>
@@ -165,8 +196,8 @@ class HospitalsView extends Component<PublicProps & RouteComponentProps, State> 
                     <Box mb={3}>
                       <HospitalCard
                         hospital={hospital}
-                        editHospitalLink={this.state.isAdmin && `/hospitals/${hospital.id}${this.props.location.search}`}
-                        onDeleteHospital={this.state.isAdmin && this.deleteHospitalById(hospital.id)}
+                        editHospitalLink={this.canEditHospital(hospital.id) && `/hospitals/${hospital.id}${this.props.location.search}`}
+                        onDeleteHospital={this.canEditHospital(hospital.id) && this.deleteHospitalById(hospital.id)}
                       />
                     </Box>
                   </Col>

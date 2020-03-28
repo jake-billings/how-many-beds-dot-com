@@ -1,5 +1,5 @@
 import React, { Component, FormEvent } from 'react'
-import { RouteComponentProps } from 'react-router'
+import { Redirect, RouteComponentProps } from 'react-router'
 import { Row, Col } from 'react-grid-system'
 
 import Navbar from './components/Navbar'
@@ -12,12 +12,15 @@ import Button from './components/Button'
 import { Hospital, validateHospital } from './types'
 import HospitalInput from './HospitalInput'
 import firebase from './firebase'
+import { Unsubscribe } from 'firebase'
 
 type PublicProps = {}
 
 type State = {
-  loading: boolean,
-  loaded: boolean,
+  loadingHospital: boolean,
+  loadingAuth: boolean,
+  isSignedIn: boolean,
+  loadedHospital: boolean,
   saving: boolean,
   hospital: Hospital
 }
@@ -35,8 +38,10 @@ type State = {
  */
 class EditHospitalView extends Component<PublicProps & RouteComponentProps<{ hospitalId: string }>, State> {
   state = {
-    loading: false,
-    loaded: false,
+    loadingHospital: false,
+    loadingAuth: true,
+    isSignedIn: false,
+    loadedHospital: false,
     saving: false,
     hospital: {
       name: '',
@@ -65,6 +70,8 @@ class EditHospitalView extends Component<PublicProps & RouteComponentProps<{ hos
    */
   ref: firebase.database.Reference | null = null
 
+  unregisterAuthObserver: Unsubscribe | undefined = undefined
+
   /**
    * getHospitalValidationErrors()
    *
@@ -88,27 +95,34 @@ class EditHospitalView extends Component<PublicProps & RouteComponentProps<{ hos
    * We can only create a hospital if we are not in the process of creating it and haven't created it yet
    */
   canSave = (): boolean =>
-    !this.state.loading
-    && this.state.loaded
+    !this.state.loadingHospital
+    && this.state.loadedHospital
     && !this.state.saving
     && this.getHospitalValidationErrors().length === 0
 
   componentDidMount = () => {
-    this.setState({ loading: true, loaded: false })
+    this.setState({ loadingHospital: true, loadedHospital: false, loadingAuth: true })
 
     this.ref = firebase.database().ref(`hospitals/${this.props.match.params.hospitalId}`)
     this.ref.on('value', (ref) => {
       const val = ref.val()
       if (val) {
-        this.setState({ loading: false, loaded: true, hospital: val })
+        this.setState({ loadingHospital: false, loadedHospital: true, hospital: val })
       } else {
-        this.setState({ loading: false, loaded: false, hospital: val })
+        this.setState({ loadingHospital: false, loadedHospital: false, hospital: val })
       }
     })
+
+    this.unregisterAuthObserver = firebase
+      .auth()
+      .onAuthStateChanged((firebaseAuthUser) => {
+        this.setState({ isSignedIn: !!firebaseAuthUser, loadingAuth: false })
+      })
   }
 
   componentWillUnmount = () => {
     if (this.ref) this.ref.off()
+    if (this.unregisterAuthObserver) this.unregisterAuthObserver()
   }
 
   /**
@@ -161,51 +175,65 @@ class EditHospitalView extends Component<PublicProps & RouteComponentProps<{ hos
   render () {
     return (
       <>
-        <Navbar />
-        <Box mv={5}>
-          <Container>
-            <Row>
-              <Col sm={8} offset={{ sm: 2 }}>
-                <Box mb={2}>
-                  <Header1>Edit Hospital</Header1>
+        {this.state.loadingAuth && (
+          <p>Loading...</p>
+        )}
+        {!this.state.loadingAuth && (
+          <>
+            {!this.state.isSignedIn && (
+              <Redirect to="/"/>
+            )}
+            {this.state.isSignedIn && (
+              <>
+                <Navbar/>
+                <Box mv={5}>
+                  <Container>
+                    <Row>
+                      <Col sm={8} offset={{ sm: 2 }}>
+                        <Box mb={2}>
+                          <Header1>Edit Hospital</Header1>
+                        </Box>
+                        <Card>
+                          {this.state.loadingHospital && <Text>Loading...</Text>}
+                          {!this.state.loadingHospital && !this.state.loadedHospital && <Text>Problem loading</Text>}
+                          {this.state.loadedHospital && (
+                            <div>
+                              <form onSubmit={this.save}>
+                                <HospitalInput
+                                  initialValue={this.state.hospital}
+                                  onChange={this.onChangeToHospital}
+                                />
+                                {this.getHospitalValidationErrors().length > 0 && (
+                                  <>
+                                    <ul>
+                                      {this.getHospitalValidationErrors().map(error => (
+                                        <li key={error}>
+                                          {error}
+                                        </li>
+                                      ))}
+                                    </ul>
+                                  </>
+                                )}
+                                <div className="form-row">
+                                  <div className="col-1">
+                                    <Button
+                                      type="submit"
+                                      disabled={!this.canSave()}
+                                    >Save</Button>
+                                  </div>
+                                </div>
+                              </form>
+                            </div>
+                          )}
+                        </Card>
+                      </Col>
+                    </Row>
+                  </Container>
                 </Box>
-                <Card>
-                  {this.state.loading && <Text>Loading...</Text>}
-                  {!this.state.loading && !this.state.loaded && <Text>Problem loading</Text>}
-                  {this.state.loaded && (
-                    <div>
-                      <form onSubmit={this.save}>
-                        <HospitalInput
-                          initialValue={this.state.hospital}
-                          onChange={this.onChangeToHospital}
-                        />
-                        {this.getHospitalValidationErrors().length > 0 && (
-                          <>
-                            <ul>
-                              {this.getHospitalValidationErrors().map(error => (
-                                <li key={error}>
-                                  {error}
-                                </li>
-                              ))}
-                            </ul>
-                          </>
-                        )}
-                        <div className="form-row">
-                          <div className="col-1">
-                            <Button
-                              type="submit"
-                              disabled={!this.canSave()}
-                            >Save</Button>
-                          </div>
-                        </div>
-                      </form>
-                    </div>
-                  )}
-                </Card>
-              </Col>
-            </Row>
-          </Container>
-        </Box>
+              </>
+            )}
+          </>
+        )}
       </>
     )
   }
