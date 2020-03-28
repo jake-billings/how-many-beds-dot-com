@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import firebase from './firebase'
 import { Location, HospitalForUI, User } from './types'
-import queryString from 'query-string'
 import { getDistance } from 'geolib'
 import { Row, Col } from 'react-grid-system'
 
