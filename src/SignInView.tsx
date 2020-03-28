@@ -1,16 +1,16 @@
-// Import FirebaseAuth and firebase.
 import React from 'react'
 import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth'
 import firebase from './firebase'
 import { Unsubscribe } from 'firebase'
 import { User } from './types'
+import { Redirect } from 'react-router'
 
 // Configure FirebaseUI.
 const uiConfig = {
   // Popup signin flow rather than redirect flow.
   signInFlow: 'redirect',
   // Redirect to /signedIn after sign in is successful. Alternatively you can provide a callbacks.signInSuccess function.
-  signInSuccessUrl: '/auth?success=true',
+  signInSuccessUrl: '/',
   // We will display Google and Facebook as auth providers.
   signInOptions: [{
     provider: firebase.auth.EmailAuthProvider.PROVIDER_ID,
@@ -21,7 +21,7 @@ const uiConfig = {
 type Props = {}
 type State = { user: User | null, loading: boolean }
 
-class AuthView extends React.Component<Props, State> {
+class SignInView extends React.Component<Props, State> {
   state = { user: null, loading: true }
 
   unregisterAuthObserver: Unsubscribe | null | undefined = undefined
@@ -72,10 +72,6 @@ class AuthView extends React.Component<Props, State> {
     if (this.ref) this.ref.off()
   }
 
-  signOut = () => {
-    firebase.auth().signOut()
-  }
-
   render () {
     return (
       <>
@@ -83,28 +79,23 @@ class AuthView extends React.Component<Props, State> {
           <p>Loading...</p>
         )}
         {!this.state.loading && (
-          <div>
-            <h1>My App</h1>
-            <p>IsSignedIn: {!!this.state.user ? 'Yes' : 'No'}</p>
+          <>
             {this.state.user && (
               <>
-                <p>Last Signed In: {(this.state.user as unknown as User).lastSignedIn}</p>
-                <p>Admin: {(this.state.user as unknown as User).isAdmin ? (<>Yes</>) : (<>No</>)}</p>
-                <p>Editor Of: {(this.state.user as unknown as User).editorOf}</p>
+                <Redirect to="/"/>
               </>
             )}
-            {this.state.user && <button onClick={this.signOut}>Sign Out</button>}
             {!this.state.user && (
               <>
                 <p>Please sign-in:</p>
                 <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()}/>
               </>
             )}
-          </div>
+          </>
         )}
       </>
     )
   }
 }
 
-export default AuthView
+export default SignInView
