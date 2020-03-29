@@ -52,6 +52,7 @@ class SignInView extends React.Component<Props, State> {
 
             this.ref.update({
               lastSignedIn: new Date(),
+              email: firebaseAuthUser.email
             })
 
             this.ref.on('value', (ref) => {

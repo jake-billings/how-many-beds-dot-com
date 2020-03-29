@@ -44,4 +44,9 @@ export type User = {
   lastSignedIn: Date
   editorOf: string
   isAdmin: boolean
+  email: string
+}
+
+export interface UserForUI extends User {
+  id: string,
 }
