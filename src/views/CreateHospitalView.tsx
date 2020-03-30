@@ -20,13 +20,18 @@ type PublicProps = RouteComponentProps;
 const defaultHospital = {
   name: '',
   location: {
-    address: '',
+    address: 'asdf',
     googleMapsPlaceId: '',
     lat: 0,
     lng: 0,
   },
-  totalBedCount: 0,
-  occupiedBedCount: 0,
+  phone: '',
+  isCovidCenter: false,
+  sharingCovidPatientCount: false,
+  covidPatientCount: 0,
+  covidCapableBedCount: 0,
+  icuCovidCapableBedCount: 0,
+  ventilatorCount: 0,
 };
 
 export default function CreateHospitalView(props: PublicProps): JSX.Element {
