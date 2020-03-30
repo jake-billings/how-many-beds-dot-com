@@ -36,6 +36,11 @@ export default function FirebaseAuthProvider(props: FirebaseAuthProviderProps): 
         if (userRef) userRef.off();
         userRef = firebase.database().ref(`users/${firebaseAuthUser.uid}`);
 
+        userRef.update({
+          lastSignedIn: new Date(),
+          email: firebaseAuthUser.email,
+        });
+
         userRef.on('value', (ref) => {
           const val: User = ref.val() as User;
 
