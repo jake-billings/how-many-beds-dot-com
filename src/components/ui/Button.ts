@@ -1,5 +1,5 @@
-import styled from 'styled-components'
-import { colors, fontFamily } from './variables'
+import styled from 'styled-components';
+import { colors, fontFamily } from './variables';
 
 export default styled.button`
   background-color: ${colors.blue};
@@ -14,4 +14,4 @@ export default styled.button`
     cursor: not-allowed;
     opacity: 0.7;
   }
-`
+`;

@@ -1,27 +1,27 @@
-import styled from 'styled-components'
+import styled from 'styled-components';
 
-const spacingUnit = 8
+const spacingUnit = 8;
 
-function s (v: number): number {
+function s(v: number): number {
   return v * spacingUnit;
 }
 
 type BoxProps = {
-  ma?: number,
-  mv?: number,
-  mh?: number,
-  ml?: number,
-  mr?: number,
-  mt?: number,
-  mb?: number,
-  pa?: number,
-  pv?: number,
-  ph?: number,
-  pl?: number,
-  pr?: number,
-  pt?: number,
-  pb?: number,
-}
+  ma?: number;
+  mv?: number;
+  mh?: number;
+  ml?: number;
+  mr?: number;
+  mt?: number;
+  mb?: number;
+  pa?: number;
+  pv?: number;
+  ph?: number;
+  pl?: number;
+  pr?: number;
+  pt?: number;
+  pb?: number;
+};
 
 export default styled.div<BoxProps>`
   margin: ${({ ma, mv, mh, ml, mr, mt, mb }) =>
@@ -34,4 +34,4 @@ export default styled.div<BoxProps>`
     ${s(pr || ph || pa || 0)}px 
     ${s(pb || pv || pa || 0)}px 
     ${s(pl || ph || pa || 0)}px`};
-`
+`;

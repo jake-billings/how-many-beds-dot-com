@@ -1,21 +1,20 @@
-import React, { Component } from 'react'
-import { Row, Col } from 'react-grid-system'
+import React, { Component } from 'react';
+import { Row, Col } from 'react-grid-system';
 
-import LocationInput from './components/LocationInput'
-import { Input, InputLabel, StyledNumericInput } from './components/Input'
-import Box from './components/Box'
+import LocationInput from './LocationInput';
+import { Input, InputLabel, StyledNumericInput } from './ui/Input';
+import Box from './ui/Box';
 
-import { Hospital } from './types'
-
+import { Hospital } from '../types';
 
 type Props = {
-  initialValue: Hospital | null,
-  onChange: (hospital: Hospital) => void
-}
+  initialValue: Hospital | null;
+  onChange: (hospital: Hospital) => void;
+};
 
 type State = {
-  hospital: Hospital
-}
+  hospital: Hospital;
+};
 
 /**
  * HospitalInput
@@ -28,7 +27,7 @@ type State = {
  */
 class HospitalInput extends Component<Props, State> {
   constructor(props: Props) {
-    super(props)
+    super(props);
     this.state = {
       hospital: props.initialValue || {
         name: '',
@@ -36,12 +35,12 @@ class HospitalInput extends Component<Props, State> {
           address: 'asdf',
           googleMapsPlaceId: '',
           lat: 0,
-          lng: 0
+          lng: 0,
         },
         totalBedCount: 0,
         occupiedBedCount: 0,
       },
-    }
+    };
   }
 
   /**
@@ -65,13 +64,13 @@ class HospitalInput extends Component<Props, State> {
    *  function to call to perform the update.
    */
   updateHospitalField = (fieldName: string) => (val: any) => {
-    this.setState(state => {
-      const hospital = { ...state.hospital } as any
-      hospital[fieldName] = val
-      this.props.onChange(hospital)
-      return { hospital }
-    })
-  }
+    this.setState((state) => {
+      const hospital = { ...state.hospital } as any;
+      hospital[fieldName] = val;
+      this.props.onChange(hospital);
+      return { hospital };
+    });
+  };
 
   /**
    * updateHospitalFieldWithEvent
@@ -94,16 +93,16 @@ class HospitalInput extends Component<Props, State> {
    *  function to call to perform the update.
    */
   updateHospitalFieldWithEvent = (fieldName: string) => (e: any) => {
-    const val = e.target.value
-    this.setState(state => {
-      const hospital = { ...state.hospital } as any
-      hospital[fieldName] = val
-      this.props.onChange(hospital)
-      return { hospital }
-    })
-  }
+    const val = e.target.value;
+    this.setState((state) => {
+      const hospital = { ...state.hospital } as any;
+      hospital[fieldName] = val;
+      this.props.onChange(hospital);
+      return { hospital };
+    });
+  };
 
-  render () {
+  render() {
     return (
       <Box pa={1}>
         <Box mb={3}>
@@ -152,8 +151,8 @@ class HospitalInput extends Component<Props, State> {
           </Col>
         </Row>
       </Box>
-    )
+    );
   }
 }
 
-export default HospitalInput
+export default HospitalInput;
