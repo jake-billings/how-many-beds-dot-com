@@ -1,7 +1,7 @@
-import styled from 'styled-components'
-import NumericInput from 'react-numeric-input'
+import styled from 'styled-components';
+import NumericInput from 'react-numeric-input';
 
-import { colors, fontFamily } from './variables'
+import { colors, fontFamily } from './variables';
 
 export const Input = styled.input`
   border: solid 1px ${colors.snow};
@@ -13,14 +13,17 @@ export const Input = styled.input`
   &:focus {
     outline: none;
   }
-  ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+  ::placeholder {
+    /* Chrome, Firefox, Opera, Safari 10.1+ */
     color: ${colors.gray};
     opacity: 1; /* Firefox */
   }
-  :-ms-input-placeholder { /* Internet Explorer 10-11 */
+  :-ms-input-placeholder {
+    /* Internet Explorer 10-11 */
     color: ${colors.gray};
   }
-  ::-ms-input-placeholder { /* Microsoft Edge */
+  ::-ms-input-placeholder {
+    /* Microsoft Edge */
     color: ${colors.gray};
   }
 `;
@@ -35,14 +38,17 @@ export const StyledNumericInput = styled(NumericInput)`
     &:focus {
       outline: none;
     }
-    ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+    ::placeholder {
+      /* Chrome, Firefox, Opera, Safari 10.1+ */
       color: ${colors.gray};
       opacity: 1; /* Firefox */
     }
-    :-ms-input-placeholder { /* Internet Explorer 10-11 */
+    :-ms-input-placeholder {
+      /* Internet Explorer 10-11 */
       color: ${colors.gray};
     }
-    ::-ms-input-placeholder { /* Microsoft Edge */
+    ::-ms-input-placeholder {
+      /* Microsoft Edge */
       color: ${colors.gray};
     }
   }
