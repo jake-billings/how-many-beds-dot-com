@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
 import { colors } from './variables';
 
@@ -19,4 +20,16 @@ export const Text = styled.p`
   color: ${colors.darkGray};
   font-size: 16px;
   line-height: 1.5;
+`;
+
+export const StyledNavLink = styled(Link)`
+  color: ${colors.white};
+  text-decoration: none;
+`;
+
+export const StyledNavButton = styled.button`
+  background: none;
+  border: none;
+  color: ${colors.white};
+  font-size: 16px;
 `;

@@ -1,8 +1,10 @@
 import React, { useContext } from 'react';
 import firebase from '../firebase';
 
-import { Link } from 'react-router-dom';
 import { FirebaseAuthContext } from '../providers/FirebaseAuth';
+
+import { StyledNavLink, StyledNavButton } from './ui/type';
+import Box from './ui/Box';
 
 export default function AuthStateButton(): JSX.Element {
   const authState = useContext(FirebaseAuthContext);
@@ -14,14 +16,14 @@ export default function AuthStateButton(): JSX.Element {
   return (
     <>
       {!authState.loading && (
-        <>
+        <Box ml={3}>
           {authState.isSignedIn && (
-            <button className="link" onClick={signOut}>
+            <StyledNavButton className="link" onClick={signOut}>
               Sign Out
-            </button>
+            </StyledNavButton>
           )}
-          {!authState.isSignedIn && <Link to="/sign-in">Sign In</Link>}
-        </>
+          {!authState.isSignedIn && <StyledNavLink to="/sign-in">Sign In</StyledNavLink>}
+        </Box>
       )}
     </>
   );

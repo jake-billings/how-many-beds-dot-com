@@ -7,6 +7,7 @@ import { Location } from '../types';
 import { colors } from './ui/variables';
 import Container from './ui/Container';
 import { Grow } from './Flex';
+import { StyledNavLink } from './ui/type';
 import LocationSearchInput from './LocationInput';
 import AuthStateButton from './AuthStateButton';
 
@@ -22,11 +23,6 @@ const StyledNavbarHeader = styled(Link)`
   color: ${colors.white};
   font-size: 16px;
   font-weight: 700;
-  text-decoration: none;
-`;
-
-const StyledNavLink = styled(Link)`
-  color: ${colors.white};
   text-decoration: none;
 `;
 
