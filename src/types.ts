@@ -21,8 +21,13 @@ export const validateLocation = (place: Location): string[] => {
 export type Hospital = {
   name: string;
   location: Location;
-  totalBedCount: number;
-  occupiedBedCount: number;
+  phone: number;
+  isCovidCenter: boolean;
+  sharingCovidPatientCount: boolean;
+  covidPatientCount: number;
+  covidCapableBedCount: number;
+  icuCovidCapableBedCount: number;
+  ventilatorCount: number;
 };
 
 export const validateHospital = (hospital: Hospital): string[] => {
