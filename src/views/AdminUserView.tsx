@@ -115,6 +115,8 @@ export default function AdminUsersView(): JSX.Element {
     });
   };
 
+  console.log('userState', userState)
+
   return (
     <>
       {isLoading() && <p>Loading...</p>}
@@ -147,9 +149,6 @@ export default function AdminUsersView(): JSX.Element {
                             disabled={rowUser.id === ((userState.user as unknown) as UserForUI).id}
                           />
                         </label>
-                      </td>
-                      <td>
-                        {rowUser.id};{((userState.user as unknown) as UserForUI).id}
                       </td>
                       <td style={{ width: '300px' }}>
                         <Select
