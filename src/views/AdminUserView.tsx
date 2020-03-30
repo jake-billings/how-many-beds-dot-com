@@ -115,8 +115,6 @@ export default function AdminUsersView(): JSX.Element {
     });
   };
 
-  console.log('userState', userState)
-
   return (
     <>
       {isLoading() && <p>Loading...</p>}
