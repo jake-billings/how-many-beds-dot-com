@@ -24,12 +24,12 @@ type BoxProps = {
 };
 
 export default styled.div<BoxProps>`
-  margin: ${({ ma, mv, mh, ml, mr, mt, mb }) =>
+  margin: ${({ ma, mv, mh, ml, mr, mt, mb }): string =>
     `${s(mt || mv || ma || 0)}px 
     ${s(mr || mh || ma || 0)}px 
     ${s(mb || mv || ma || 0)}px 
     ${s(ml || mh || ma || 0)}px`};
-  padding: ${({ pa, pv, ph, pl, pr, pt, pb }) =>
+  padding: ${({ pa, pv, ph, pl, pr, pt, pb }): string =>
     `${s(pt || pv || pa || 0)}px 
     ${s(pr || ph || pa || 0)}px 
     ${s(pb || pv || pa || 0)}px 

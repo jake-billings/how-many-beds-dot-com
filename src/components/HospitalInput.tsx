@@ -7,6 +7,7 @@ import Box from './ui/Box';
 
 import { Hospital } from '../types';
 import { Text } from './ui/type';
+import { Flex } from './Flex';
 
 type Props = {
   initialValue: Hospital | null;
@@ -100,16 +101,20 @@ export default function HospitalInput({ initialValue, onChange }: Props): JSX.El
         </Col>
         <Col sm={6}>
           <Box mb={1}>
-            <input
-              type="checkbox"
-              checked={hospital.isCovidCenter}
-              onChange={(): void => {
-                updateHospitalField('isCovidCenter')(!hospital.isCovidCenter);
-              }}
-            />
-            <InputLabel>
-              Advertise this hospital as a <i>Covid Center</i>
-            </InputLabel>
+            <Flex center>
+              <Box mr={1}>
+                <input
+                  type="checkbox"
+                  checked={hospital.isCovidCenter}
+                  onChange={(): void => {
+                    updateHospitalField('isCovidCenter')(!hospital.isCovidCenter);
+                  }}
+                />
+              </Box>
+              <InputLabel>
+                Advertise this hospital as a <i>Covid Center</i>
+              </InputLabel>
+            </Flex>
           </Box>
         </Col>
         <Col sm={6}>
@@ -119,14 +124,18 @@ export default function HospitalInput({ initialValue, onChange }: Props): JSX.El
         </Col>
         <Col sm={6}>
           <Box mb={1}>
-            <input
-              type="checkbox"
-              checked={hospital.sharingCovidPatientCount}
-              onChange={(): void => {
-                updateHospitalField('sharingCovidPatientCount')(!hospital.sharingCovidPatientCount);
-              }}
-            />
-            <InputLabel>Share Number of COVID Patients</InputLabel>
+            <Flex center>
+              <Box mr={1}>
+                <input
+                  type="checkbox"
+                  checked={hospital.sharingCovidPatientCount}
+                  onChange={(): void => {
+                    updateHospitalField('sharingCovidPatientCount')(!hospital.sharingCovidPatientCount);
+                  }}
+                />
+              </Box>
+              <InputLabel>Share Number of COVID Patients</InputLabel>
+            </Flex>
           </Box>
           {hospital.sharingCovidPatientCount && (
             <Box mb={11}>

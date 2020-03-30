@@ -97,13 +97,11 @@ export default function CreateHospitalView(props: PublicProps): JSX.Element {
                         </ul>
                       </>
                     )}
-                    <div className="form-row">
-                      <div className="col-1">
-                        <Button type="submit" disabled={!canCreate()}>
-                          Create
-                        </Button>
-                      </div>
-                    </div>
+                    <Box pa={1}>
+                      <Button type="submit" disabled={!canCreate()}>
+                        Create
+                      </Button>
+                    </Box>
                   </form>
                 </Card>
               </Col>
