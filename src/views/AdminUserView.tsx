@@ -148,9 +148,6 @@ export default function AdminUsersView(): JSX.Element {
                           />
                         </label>
                       </td>
-                      <td>
-                        {rowUser.id};{((userState.user as unknown) as UserForUI).id}
-                      </td>
                       <td style={{ width: '300px' }}>
                         <Select
                           value={getHospital(rowUser.editorOf)}
