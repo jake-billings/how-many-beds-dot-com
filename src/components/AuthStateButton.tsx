@@ -16,7 +16,7 @@ export default function AuthStateButton(): JSX.Element {
   return (
     <>
       {!authState.loading && (
-        <Box ml={3}>
+        <Box pv={1}>
           {authState.isSignedIn && (
             <StyledNavButton className="link" onClick={signOut}>
               Sign Out
