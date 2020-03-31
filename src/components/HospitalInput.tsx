@@ -36,7 +36,7 @@ const defaultHospital = {
 };
 
 export default function HospitalInput({ initialValue, onChange }: Props): JSX.Element {
-  const [hospital, setHospital] = useState(defaultHospital);
+  const [hospital, setHospital] = useState(initialValue || defaultHospital);
 
   const updateHospitalField = (fieldName: string) => (val: any): void => {
     setHospital((h) => {
