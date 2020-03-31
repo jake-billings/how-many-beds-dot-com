@@ -11,6 +11,8 @@ import { Header3 } from './ui/type';
 
 import { HospitalForUI } from '../types';
 
+import HospitalUtilizationChart from './HospitalUtilizationChart';
+
 const StyledCardByline = styled.p`
   color: ${colors.gray};
   font-size: 16px;
@@ -83,6 +85,10 @@ export default function HospitalCard({
         </Flex>
       </Box>
       <Row align="center">
+        <Col xs={2} />
+        <Col xs={8}>
+          <HospitalUtilizationChart hospital={hospital} />
+        </Col>
         <Col xs={6}>
           <Box mb={2}>
             <Box mb={0.5}>
