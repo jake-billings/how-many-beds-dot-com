@@ -11,7 +11,7 @@ import { Hospital } from '../types';
 import { Text } from './ui/type';
 import { Flex } from './Flex';
 import Slider from 'rc-slider';
-import { colors } from './ui/variables'
+import { colors } from './ui/variables';
 
 type Props = {
   initialValue: Hospital | null;
