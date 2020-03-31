@@ -18,12 +18,12 @@ export const validateLocation = (place: Location): string[] => {
   return validationErrors;
 };
 
-const phoneRegex = /^[(]{0,1}[0-9]{3}[)]{0,1}[-\s\.]{0,1}[0-9]{3}[-\s\.]{0,1}[0-9]{4}$/;
+const phoneRegex = /^[0-9\(\) -]*$/;
 
 const validatePhone = (phone: string): string[] => {
   const validationErrors = [];
 
-  if (!phone.trim().match(phoneRegex)) validationErrors.push('Hospital phone must be a valid phone number.');
+  if (!phone.match(phoneRegex)) validationErrors.push('Hospital phone must be a valid phone number.');
 
   return validationErrors;
 };
