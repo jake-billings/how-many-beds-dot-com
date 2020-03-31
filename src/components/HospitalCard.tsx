@@ -68,7 +68,8 @@ export default function HospitalCard({
   canDeleteHospital,
 }: HospitalCardProps): JSX.Element {
   return (
-    <Card>
+    <Card style={{ height: 'calc(100% - 34px)' }}>
+      {/* <Flex column space> */}
       <Box mb={2}>
         <Flex>
           <div>
@@ -136,6 +137,7 @@ export default function HospitalCard({
           </StyledCardLinkButton>
         </Flex>
       </Box>
+      {/* </Flex> */}
     </Card>
   );
 }

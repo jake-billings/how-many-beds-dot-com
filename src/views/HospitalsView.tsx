@@ -16,14 +16,14 @@ import { Text } from '../components/ui/type';
 type PublicProps = RouteComponentProps;
 
 const RowWrapper = styled(Row)`
-  @media (min-width: 40em) {
-    height: calc(100% - 60px);
-    overflow: hidden;
-  }
+  height: calc(100% - 60px);
+  overflow: hidden;
 `;
 
 const BoxWrapper = styled(Box)`
+  overflow-x: hidden;
   @media (max-width: 40em) {
+    height: 100%;
     margin: 0 auto;
     width: 90%;
   }
@@ -31,9 +31,11 @@ const BoxWrapper = styled(Box)`
     height: 100%;
     margin-left: calc((100vw - 1200px) / 2);
     overflow-y: scroll;
+    width: calc(100% - (100vw - 1200px) / 2);
   }
   @media (max-width: 1340px) {
     margin-left: calc(5vw);
+    width: 90%;
   }
 `;
 
@@ -124,7 +126,7 @@ export default function HospitalsView(props: RouteComponentProps): JSX.Element {
   const canCreateHospital = (): boolean => user?.isAdmin || false;
 
   return (
-    <div style={{ height: '100%', width: '100%' }}>
+    <div style={{ height: '100%', width: '100%', overflow: 'hidden' }}>
       <Navbar
         onLocationChange={(location): void => {
           setLocation(location);
@@ -142,7 +144,7 @@ export default function HospitalsView(props: RouteComponentProps): JSX.Element {
             <Box pt={5} pb={8}>
               <Row>
                 {getHospitals().map((hospital) => (
-                  <Col sm={6} key={hospital.id}>
+                  <Col sm={6} key={hospital.id} style={{ flexGrow: 1 }}>
                     <Box mb={3}>
                       <HospitalCard
                         hospital={hospital}
