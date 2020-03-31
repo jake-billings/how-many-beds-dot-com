@@ -145,7 +145,7 @@ export default function HospitalsView(props: RouteComponentProps): JSX.Element {
               <Row>
                 {getHospitals().map((hospital) => (
                   <Col sm={6} key={hospital.id} style={{ flexGrow: 1 }}>
-                    <Box mb={3}>
+                    <Box mb={3} style={{ height: 'calc(100% - 24px)' }}>
                       <HospitalCard
                         hospital={hospital}
                         editHospitalLink={

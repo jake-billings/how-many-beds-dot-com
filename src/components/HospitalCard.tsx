@@ -69,75 +69,76 @@ export default function HospitalCard({
 }: HospitalCardProps): JSX.Element {
   return (
     <Card style={{ height: 'calc(100% - 34px)' }}>
-      {/* <Flex column space> */}
-      <Box mb={2}>
-        <Flex>
-          <div>
-            <Box mb={0.5}>
-              <Header3>{hospital.name}</Header3>
-            </Box>
-            <StyledCardByline>{hospital.location.address}</StyledCardByline>
-            {hospital.isCovidCenter && <StyledCardByline>COVID CENTER</StyledCardByline>}
-          </div>
-          <Grow />
-          {hospital.distanceMiles && <StyledCardByline>{hospital.distanceMiles.toFixed(2)} miles</StyledCardByline>}
-        </Flex>
-      </Box>
-      <Row align="center">
-        <Col xs={6}>
-          <Box mb={2}>
-            <Box mb={0.5}>
-              <StyledStatisticValue primary>{hospital.covidCapableBedCount}</StyledStatisticValue>
-            </Box>
-            <StyledStatisticByline>covid beds</StyledStatisticByline>
-          </Box>
-        </Col>
-        <Col xs={6}>
-          <Box mb={2}>
-            <Box mb={0.5}>
-              <StyledStatisticValue primary>{hospital.icuCovidCapableBedCount}</StyledStatisticValue>
-            </Box>
-            <StyledStatisticByline>covid+icu beds</StyledStatisticByline>
-          </Box>
-        </Col>
-        <Col xs={6}>
-          <Box mb={2}>
-            <Box mb={0.5}>
-              <StyledStatisticValue>{hospital.ventilatorCount}</StyledStatisticValue>
-            </Box>
-            <StyledStatisticByline>ventilator count</StyledStatisticByline>
-          </Box>
-        </Col>
-        {hospital.sharingCovidPatientCount && (
+      <Flex column style={{ height: '100%' }}>
+        <Box mb={2}>
+          <Flex>
+            <div>
+              <Box mb={0.5}>
+                <Header3>{hospital.name}</Header3>
+              </Box>
+              <StyledCardByline>{hospital.location.address}</StyledCardByline>
+              {hospital.isCovidCenter && <StyledCardByline>COVID CENTER</StyledCardByline>}
+            </div>
+            <Grow />
+            {hospital.distanceMiles && <StyledCardByline>{hospital.distanceMiles.toFixed(2)} miles</StyledCardByline>}
+          </Flex>
+        </Box>
+        <Row align="center">
           <Col xs={6}>
             <Box mb={2}>
               <Box mb={0.5}>
-                <StyledStatisticValue>{hospital.covidPatientCount}</StyledStatisticValue>
+                <StyledStatisticValue primary>{hospital.covidCapableBedCount}</StyledStatisticValue>
               </Box>
-              <StyledStatisticByline>covid patients</StyledStatisticByline>
+              <StyledStatisticByline>covid beds</StyledStatisticByline>
             </Box>
           </Col>
-        )}
-      </Row>
-      <Box mt={3}>
-        <Flex>
-          {editHospitalLink && (
-            <Link to={editHospitalLink} style={{ textDecoration: 'none', marginRight: '15px' }}>
-              <StyledCardLink>Edit</StyledCardLink>
-            </Link>
+          <Col xs={6}>
+            <Box mb={2}>
+              <Box mb={0.5}>
+                <StyledStatisticValue primary>{hospital.icuCovidCapableBedCount}</StyledStatisticValue>
+              </Box>
+              <StyledStatisticByline>covid+icu beds</StyledStatisticByline>
+            </Box>
+          </Col>
+          <Col xs={6}>
+            <Box mb={2}>
+              <Box mb={0.5}>
+                <StyledStatisticValue>{hospital.ventilatorCount}</StyledStatisticValue>
+              </Box>
+              <StyledStatisticByline>ventilator count</StyledStatisticByline>
+            </Box>
+          </Col>
+          {hospital.sharingCovidPatientCount && (
+            <Col xs={6}>
+              <Box mb={2}>
+                <Box mb={0.5}>
+                  <StyledStatisticValue>{hospital.covidPatientCount}</StyledStatisticValue>
+                </Box>
+                <StyledStatisticByline>covid patients</StyledStatisticByline>
+              </Box>
+            </Col>
           )}
-          {canDeleteHospital && <StyledCardLinkButton onClick={onDeleteHospital}>Delete</StyledCardLinkButton>}
-          <Grow />
-          <StyledCardLinkButton
-            onClick={(): void => {
-              window.open(generateDirectionsUrl(hospital), '_blank');
-            }}
-          >
-            Get Directions
-          </StyledCardLinkButton>
-        </Flex>
-      </Box>
-      {/* </Flex> */}
+        </Row>
+        <Grow />
+        <Box mt={3} style={{ width: '100%' }}>
+          <Flex>
+            {editHospitalLink && (
+              <Link to={editHospitalLink} style={{ textDecoration: 'none', marginRight: '15px' }}>
+                <StyledCardLink>Edit</StyledCardLink>
+              </Link>
+            )}
+            {canDeleteHospital && <StyledCardLinkButton onClick={onDeleteHospital}>Delete</StyledCardLinkButton>}
+            <Grow />
+            <StyledCardLinkButton
+              onClick={(): void => {
+                window.open(generateDirectionsUrl(hospital), '_blank');
+              }}
+            >
+              Get Directions
+            </StyledCardLinkButton>
+          </Flex>
+        </Box>
+      </Flex>
     </Card>
   );
 }
