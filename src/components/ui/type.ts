@@ -31,5 +31,6 @@ export const StyledNavButton = styled.button`
   background: none;
   border: none;
   color: ${colors.white};
+  cursor: pointer;
   font-size: 16px;
 `;
