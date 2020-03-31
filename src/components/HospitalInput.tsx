@@ -107,7 +107,7 @@ export default function HospitalInput({ initialValue, onChange }: Props): JSX.El
             <InputLabel>Phone</InputLabel>
             <Input
               type="text"
-              placeholder="1234567890"
+              placeholder="212-555-1234"
               value={hospital.phone}
               onChange={updateHospitalFieldWithEvent('phone')}
             />
