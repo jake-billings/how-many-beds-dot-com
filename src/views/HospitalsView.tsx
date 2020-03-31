@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import firebase from '../firebase';
-import { Location, HospitalForUI, Hospital } from '../types';
+import { Location, HospitalForUI } from '../types';
 import { getDistance } from 'geolib';
 import { Row, Col } from 'react-grid-system';
 
@@ -11,6 +11,7 @@ import Container from '../components/ui/Container';
 import Navbar from '../components/Navbar';
 import HospitalMap from '../components/HospitalMap';
 import { FirebaseAuthContext } from '../providers/FirebaseAuth';
+import { Text } from '../components/ui/type';
 
 type PublicProps = RouteComponentProps;
 
@@ -101,7 +102,7 @@ export default function HospitalsView(props: RouteComponentProps): JSX.Element {
   const canCreateHospital = (): boolean => user?.isAdmin || false;
 
   return (
-    <>
+    <div style={{ height: '100%', width: '100%' }}>
       <Navbar
         onLocationChange={(location): void => {
           setLocation(location);
@@ -109,11 +110,14 @@ export default function HospitalsView(props: RouteComponentProps): JSX.Element {
         canCreateNewHospital={canCreateHospital()}
         searchQuery={props.location.search}
       />
-      <Container>
-        {loadingState.loading && <p>Loading...</p>}
-        <Box mv={5}>
-          <Row>
-            <Col md={8}>
+      {loadingState.loading && <p>Loading...</p>}
+      <Row style={{ height: 'calc(100% - 60px)', overflow: 'hidden' }}>
+        <Col md={8} style={{ height: '100%' }}>
+          <Box style={{ marginLeft: 'calc((100vw - 1200px) / 2) ', overflowY: 'scroll', height: '100%' }}>
+            <Box mt={5}>
+              <Text>Currently sourcing {getHospitals().length} hospitals.</Text>
+            </Box>
+            <Box pt={5} pb={8}>
               <Row>
                 {getHospitals().map((hospital) => (
                   <Col sm={6} key={hospital.id}>
@@ -130,13 +134,13 @@ export default function HospitalsView(props: RouteComponentProps): JSX.Element {
                   </Col>
                 ))}
               </Row>
-            </Col>
-            <Col md={4}>
-              <HospitalMap location={loc} hospitals={hospitals} />
-            </Col>
-          </Row>
-        </Box>
-      </Container>
-    </>
+            </Box>
+          </Box>
+        </Col>
+        <Col md={4} style={{ height: '100%' }}>
+          <HospitalMap location={loc} hospitals={hospitals} />
+        </Col>
+      </Row>
+    </div>
   );
 }
