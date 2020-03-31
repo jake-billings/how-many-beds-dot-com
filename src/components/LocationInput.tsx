@@ -132,7 +132,7 @@ export default function LocationSearchInput({
           <StyledLocationInput
             inverse={inverse}
             {...getInputProps({
-              placeholder: 'Search Places',
+              placeholder: 'Search Places like New York, New York...',
             })}
           />
           {(loading || suggestions.length > 0) && (
