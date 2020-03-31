@@ -20,8 +20,8 @@ function HospitalMarker({ name }: HospitalMarkerProps): JSX.Element {
 }
 
 const DEFAULT_LAT_LNG = {
-  lat: 39.7392,
-  lng: -104.9903,
+  lat: 40.7306,
+  lng: -73.9352,
 };
 
 type HospitalMapProps = {

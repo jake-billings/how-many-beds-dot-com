@@ -18,16 +18,39 @@ export const validateLocation = (place: Location): string[] => {
   return validationErrors;
 };
 
+const phoneRegex = /^[0-9\(\) -]*$/;
+
+const validatePhone = (phone: string): string[] => {
+  const validationErrors = [];
+
+  if (!phone.match(phoneRegex)) validationErrors.push('Hospital phone must be a valid phone number.');
+
+  return validationErrors;
+};
+
 export type Hospital = {
   name: string;
   location: Location;
-  totalBedCount: number;
-  occupiedBedCount: number;
+  phone: string;
+  capacityPercent: number;
+  isCovidCenter: boolean;
+  sharingCovidPatientCount: boolean;
+  covidPatientCount: number;
+  covidCapableBedCount: number;
+  icuCovidCapableBedCount: number;
+  ventilatorCount: number;
 };
 
 export const validateHospital = (hospital: Hospital): string[] => {
   const validationErrors = [];
   if (hospital.name.trim() === '') validationErrors.push('Hospital name cannot be empty.');
+  if (!hospital.phone) {
+    validationErrors.push('Hospital phone cannot be empty.');
+  } else {
+    validatePhone(hospital.phone).forEach((phoneError) => {
+      validationErrors.push(phoneError);
+    });
+  }
   if (!hospital.location) {
     validationErrors.push('Hospital must have a location');
   } else {
@@ -35,10 +58,11 @@ export const validateHospital = (hospital: Hospital): string[] => {
       validationErrors.push(locationError);
     });
   }
-  if (hospital.totalBedCount < 0) validationErrors.push('Hospital bed count cannot be negative.');
-  if (hospital.occupiedBedCount < 0) validationErrors.push('Occupied bed count cannot be negative.');
-  if (hospital.occupiedBedCount > hospital.totalBedCount)
-    validationErrors.push('Occupied bed cannot be greater than total bed count.');
+  if (hospital.sharingCovidPatientCount && hospital.covidPatientCount < 0)
+    validationErrors.push('COVID patient count cannot be negative.');
+  if (hospital.covidCapableBedCount < 0) validationErrors.push('COVID capabale bed count cannot be negative.');
+  if (hospital.icuCovidCapableBedCount < 0) validationErrors.push('ICU+COVID capable bed cannot be negative.');
+  if (hospital.ventilatorCount < 0) validationErrors.push('Ventilator count cannot be negative.');
   return validationErrors;
 };
 

@@ -3,8 +3,6 @@ import styled from 'styled-components';
 import { Row, Col } from 'react-grid-system';
 import { Link } from 'react-router-dom';
 
-import HospitalUtilizationChart from './HospitalUtilizationChart';
-
 import { colors, fontFamily } from './ui/variables';
 import Box from './ui/Box';
 import { Flex, Grow } from './Flex';
@@ -71,34 +69,54 @@ export default function HospitalCard({
 }: HospitalCardProps): JSX.Element {
   return (
     <Card>
-      <Flex>
-        <div>
-          <Box mb={0.5}>
-            <Header3>{hospital.name}</Header3>
-          </Box>
-          <StyledCardByline>{hospital.location.address}</StyledCardByline>
-        </div>
-        <Grow />
-        {hospital.distanceMiles && <StyledCardByline>{hospital.distanceMiles.toFixed(2)} miles</StyledCardByline>}
-      </Flex>
+      <Box mb={2}>
+        <Flex>
+          <div>
+            <Box mb={0.5}>
+              <Header3>{hospital.name}</Header3>
+            </Box>
+            <StyledCardByline>{hospital.location.address}</StyledCardByline>
+            {hospital.isCovidCenter && <StyledCardByline>COVID CENTER</StyledCardByline>}
+          </div>
+          <Grow />
+          {hospital.distanceMiles && <StyledCardByline>{hospital.distanceMiles.toFixed(2)} miles</StyledCardByline>}
+        </Flex>
+      </Box>
       <Row align="center">
-        <Col xs={8}>
-          <HospitalUtilizationChart hospital={hospital} />
-        </Col>
-        <Col xs={4}>
-          <Box mb={1}>
+        <Col xs={6}>
+          <Box mb={2}>
             <Box mb={0.5}>
-              <StyledStatisticValue primary>{hospital.totalBedCount - hospital.occupiedBedCount}</StyledStatisticValue>
+              <StyledStatisticValue primary>{hospital.covidCapableBedCount}</StyledStatisticValue>
             </Box>
-            <StyledStatisticByline>available</StyledStatisticByline>
-          </Box>
-          <Box>
-            <Box mb={0.5}>
-              <StyledStatisticValue>{hospital.totalBedCount}</StyledStatisticValue>
-            </Box>
-            <StyledStatisticByline>total</StyledStatisticByline>
+            <StyledStatisticByline>covid beds</StyledStatisticByline>
           </Box>
         </Col>
+        <Col xs={6}>
+          <Box mb={2}>
+            <Box mb={0.5}>
+              <StyledStatisticValue primary>{hospital.icuCovidCapableBedCount}</StyledStatisticValue>
+            </Box>
+            <StyledStatisticByline>covid+icu beds</StyledStatisticByline>
+          </Box>
+        </Col>
+        <Col xs={6}>
+          <Box mb={2}>
+            <Box mb={0.5}>
+              <StyledStatisticValue>{hospital.ventilatorCount}</StyledStatisticValue>
+            </Box>
+            <StyledStatisticByline>ventilator count</StyledStatisticByline>
+          </Box>
+        </Col>
+        {hospital.sharingCovidPatientCount && (
+          <Col xs={6}>
+            <Box mb={2}>
+              <Box mb={0.5}>
+                <StyledStatisticValue>{hospital.covidPatientCount}</StyledStatisticValue>
+              </Box>
+              <StyledStatisticByline>covid patients</StyledStatisticByline>
+            </Box>
+          </Col>
+        )}
       </Row>
       <Box mt={3}>
         <Flex>
