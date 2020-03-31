@@ -139,7 +139,7 @@ export default function HospitalInput({ initialValue, onChange }: Props): JSX.El
           </Box>
           {hospital.sharingCovidPatientCount && (
             <Box mb={11}>
-              <InputLabel>Phone</InputLabel>
+              <InputLabel>COVID Patient Count</InputLabel>
               <StyledNumericInput
                 type="number"
                 placeholder="500"
