@@ -6,9 +6,9 @@ export const colors = {
   darkGray: '#646d78',
   gray: '#97a1ad',
   snow: '#eceef0',
-  white: '#fff'
-}
+  white: '#fff',
+};
 
 export const fontFamily = `-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-sans-serif;`
+sans-serif;`;
