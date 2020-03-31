@@ -25,7 +25,7 @@ type PublicProps = RouteComponentProps & {
 const defaultHospital = {
   name: '',
   location: {
-    address: 'asdf',
+    address: '',
     googleMapsPlaceId: '',
     lat: 0,
     lng: 0,

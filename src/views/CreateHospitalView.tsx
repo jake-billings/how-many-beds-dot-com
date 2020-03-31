@@ -10,8 +10,7 @@ import Container from '../components/ui/Container';
 import Box from '../components/ui/Box';
 import Card from '../components/ui/Card';
 import Button from '../components/ui/Button';
-import { Header1, Header3 } from '../components/ui/type';
-import { Unsubscribe } from 'firebase';
+import { Header1 } from '../components/ui/type';
 
 import { ProtectedRoute } from '../providers/FirebaseAuth';
 
@@ -20,7 +19,7 @@ type PublicProps = RouteComponentProps;
 const defaultHospital = {
   name: '',
   location: {
-    address: 'asdf',
+    address: '',
     googleMapsPlaceId: '',
     lat: 0,
     lng: 0,

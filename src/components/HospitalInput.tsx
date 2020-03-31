@@ -1,4 +1,4 @@
-import React, { Component, useState, ChangeEvent } from 'react';
+import React, { useState, ChangeEvent } from 'react';
 import { Row, Col } from 'react-grid-system';
 
 import LocationInput from './LocationInput';
@@ -21,7 +21,7 @@ type State = {
 const defaultHospital = {
   name: '',
   location: {
-    address: 'asdf',
+    address: '',
     googleMapsPlaceId: '',
     lat: 0,
     lng: 0,
