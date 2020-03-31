@@ -30,8 +30,14 @@ const defaultHospital = {
     lat: 0,
     lng: 0,
   },
-  totalBedCount: 0,
-  occupiedBedCount: 0,
+  phone: '',
+  capacityPercent: 50,
+  isCovidCenter: false,
+  sharingCovidPatientCount: false,
+  covidPatientCount: 0,
+  covidCapableBedCount: 0,
+  icuCovidCapableBedCount: 0,
+  ventilatorCount: 0,
 };
 
 export default function EditHospitalView(props: PublicProps): JSX.Element {
@@ -128,21 +134,19 @@ export default function EditHospitalView(props: PublicProps): JSX.Element {
                       <form onSubmit={save}>
                         <HospitalInput initialValue={hospital} onChange={setHospital} />
                         {getHospitalValidationErrors().length > 0 && (
-                          <>
-                            <ul>
+                          <Box pv={2} ph={1}>
+                            <ul style={{ listStylePosition: 'inside' }}>
                               {getHospitalValidationErrors().map((error) => (
                                 <li key={error}>{error}</li>
                               ))}
                             </ul>
-                          </>
+                          </Box>
                         )}
-                        <div className="form-row">
-                          <div className="col-1">
-                            <Button type="submit" disabled={!canSave()}>
-                              Save
-                            </Button>
-                          </div>
-                        </div>
+                        <Box pa={1}>
+                          <Button type="submit" disabled={!canSave()}>
+                            Save
+                          </Button>
+                        </Box>
                       </form>
                     </div>
                   )}

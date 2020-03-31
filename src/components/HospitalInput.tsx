@@ -1,4 +1,6 @@
-import React, { Component } from 'react';
+import 'rc-slider/assets/index.css';
+
+import React, { useState, ChangeEvent } from 'react';
 import { Row, Col } from 'react-grid-system';
 
 import LocationInput from './LocationInput';
@@ -6,6 +8,10 @@ import { Input, InputLabel, StyledNumericInput } from './ui/Input';
 import Box from './ui/Box';
 
 import { Hospital } from '../types';
+import { Text } from './ui/type';
+import { Flex } from './Flex';
+import Slider from 'rc-slider';
+import { colors } from './ui/variables';
 
 type Props = {
   initialValue: Hospital | null;
@@ -16,143 +22,209 @@ type State = {
   hospital: Hospital;
 };
 
-/**
- * HospitalInput
- *
- * React Component/Input
- *
- * This component abstracts all of the form fields necessary to edit or create a hospital object.
- *  As a result, we can have a separate component to create and a separte component to edit hospital
- *  objects without duplicating too much code.
- */
-class HospitalInput extends Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      hospital: props.initialValue || {
-        name: '',
-        location: {
-          address: 'asdf',
-          googleMapsPlaceId: '',
-          lat: 0,
-          lng: 0,
-        },
-        totalBedCount: 0,
-        occupiedBedCount: 0,
-      },
-    };
-  }
+const defaultHospital = {
+  name: '',
+  location: {
+    address: '',
+    googleMapsPlaceId: '',
+    lat: 0,
+    lng: 0,
+  },
+  phone: '',
+  capacityPercent: 50,
+  isCovidCenter: false,
+  sharingCovidPatientCount: false,
+  covidPatientCount: 0,
+  covidCapableBedCount: 0,
+  icuCovidCapableBedCount: 0,
+  ventilatorCount: 0,
+};
 
-  /**
-   * updateHospitalField
-   *
-   * composed function
-   *
-   * returns a function that updates a field with fieldName on the state hospital object
-   *
-   * Usage:
-   *  <NumericInput
-   *  type="number"
-   *  className="form-control"
-   *  placeholder="500"
-   *  min={0}
-   *  value={this.state.hospital.totalBedCount}
-   *  onChange={this.updateHospitalField('totalBedCount')}
-   *  />
-   *
-   * Notice that onChange typically accepts a function - not a functino call. That's because we return the
-   *  function to call to perform the update.
-   */
-  updateHospitalField = (fieldName: string) => (val: any) => {
-    this.setState((state) => {
-      const hospital = { ...state.hospital } as any;
+export default function HospitalInput({ initialValue, onChange }: Props): JSX.Element {
+  const [hospital, setHospital] = useState(initialValue || defaultHospital);
+
+  const updateHospitalField = (fieldName: string) => (val: any): void => {
+    setHospital((h) => {
+      const hospital = { ...h } as any;
       hospital[fieldName] = val;
-      this.props.onChange(hospital);
-      return { hospital };
+      onChange(hospital);
+      return hospital;
     });
   };
 
-  /**
-   * updateHospitalFieldWithEvent
-   *
-   * composed function
-   *
-   * returns a function that updates a field with fieldName on the state hospital object after receiving an HTML event
-   *
-   * VERY similar to updateHospitalField but works directly with input objects that send native events
-   *
-   * Usage:
-   *  <input type="text"
-   *   className="form-control"
-   *   placeholder="Medical facilities name"
-   *   value={this.state.hospital.name}
-   *   onChange={this.updateHospitalFieldWithEvent('name')}
-   *  />
-   *
-   * Notice that onChange typically accepts a function - not a functino call. That's because we return the
-   *  function to call to perform the update.
-   */
-  updateHospitalFieldWithEvent = (fieldName: string) => (e: any) => {
-    const val = e.target.value;
-    this.setState((state) => {
-      const hospital = { ...state.hospital } as any;
+  const updateHospitalFieldWithEvent = (fieldName: string) => (e: ChangeEvent<HTMLInputElement>): void => {
+    const val = e?.target?.value;
+    if (!val) return;
+    setHospital((h) => {
+      const hospital = { ...h } as any;
       hospital[fieldName] = val;
-      this.props.onChange(hospital);
-      return { hospital };
+      onChange(hospital);
+      return hospital;
     });
   };
 
-  render() {
-    return (
-      <Box pa={1}>
-        <Box mb={3}>
-          <Row>
-            <Col sm={6}>
-              <InputLabel>Name</InputLabel>
-              <Input
-                type="text"
-                placeholder="Medical facilities name"
-                value={this.state.hospital.name}
-                onChange={this.updateHospitalFieldWithEvent('name')}
+  return (
+    <Box pa={1}>
+      <Row>
+        <Col sm={6}>
+          <Box mb={3}>
+            <InputLabel>Name</InputLabel>
+            <Input
+              type="text"
+              placeholder="Medical facilities name"
+              value={hospital.name}
+              onChange={updateHospitalFieldWithEvent('name')}
+            />
+          </Box>
+        </Col>
+        <Col sm={6}>
+          <Box mb={3}>
+            <InputLabel>Address</InputLabel>
+            <LocationInput
+              inverse
+              initialValue={hospital.location}
+              onChange={updateHospitalField('location')}
+              googleMapsSearchOptions={{}}
+            />
+          </Box>
+        </Col>
+        <Col sm={6}>
+          <Box mb={3}>
+            <InputLabel>Overall Hospital Utilization {hospital.capacityPercent}%</InputLabel>
+            <Slider
+              value={hospital.capacityPercent}
+              onChange={updateHospitalField('capacityPercent')}
+              trackStyle={{ backgroundColor: colors.blue }}
+              handleStyle={{ borderColor: colors.blue }}
+              min={0}
+              max={100}
+              defaultValue={50}
+            />
+          </Box>
+        </Col>
+        <Col sm={6}>
+          <Box mb={3}>
+            <InputLabel>Phone</InputLabel>
+            <Input
+              type="text"
+              placeholder="212-555-1234"
+              value={hospital.phone}
+              onChange={updateHospitalFieldWithEvent('phone')}
+            />
+          </Box>
+        </Col>
+        <Col sm={6}>
+          <Box mb={1}>
+            <Flex center>
+              <Box mr={1}>
+                <input
+                  type="checkbox"
+                  checked={hospital.isCovidCenter}
+                  onChange={(): void => {
+                    updateHospitalField('isCovidCenter')(!hospital.isCovidCenter);
+                  }}
+                />
+              </Box>
+              <InputLabel>
+                Advertise this hospital as a <i>Covid Center</i>
+              </InputLabel>
+            </Flex>
+          </Box>
+        </Col>
+        <Col sm={6}>
+          <Box mb={3}>
+            <Text>By advertising this hospital as a covid center, it will receive priority ranking.</Text>
+          </Box>
+        </Col>
+        <Col sm={6}>
+          <Box mb={1}>
+            <Flex center>
+              <Box mr={1}>
+                <input
+                  type="checkbox"
+                  checked={hospital.sharingCovidPatientCount}
+                  onChange={(): void => {
+                    updateHospitalField('sharingCovidPatientCount')(!hospital.sharingCovidPatientCount);
+                  }}
+                />
+              </Box>
+              <InputLabel>Share Number of COVID Patients</InputLabel>
+            </Flex>
+          </Box>
+          {hospital.sharingCovidPatientCount && (
+            <Box mb={11}>
+              <InputLabel>COVID Patient Count</InputLabel>
+              <StyledNumericInput
+                type="number"
+                placeholder="500"
+                min={0}
+                value={hospital.covidPatientCount}
+                onChange={updateHospitalField('covidPatientCount')}
               />
-            </Col>
-            <Col sm={6}>
-              <InputLabel>Address</InputLabel>
-              <LocationInput
-                inverse
-                initialValue={this.state.hospital.location}
-                onChange={this.updateHospitalField('location')}
-                googleMapsSearchOptions={{}}
-              />
-            </Col>
-          </Row>
-        </Box>
-        <Row>
-          <Col sm={6}>
-            <InputLabel>Total Bed Count</InputLabel>
+            </Box>
+          )}
+        </Col>
+        <Col sm={6}>
+          <Box mb={3}>
+            <Text>placeholder helper text</Text>
+          </Box>
+        </Col>
+        <Col sm={6}>
+          <Box mb={1}>
+            <InputLabel>COVID Capable Beds</InputLabel>
             <StyledNumericInput
               type="number"
               placeholder="500"
               min={0}
-              value={this.state.hospital.totalBedCount}
-              onChange={this.updateHospitalField('totalBedCount')}
+              value={hospital.covidCapableBedCount}
+              onChange={updateHospitalField('covidCapableBedCount')}
             />
-          </Col>
-          <Col sm={6}>
-            <InputLabel>Occupied Bed Count</InputLabel>
+          </Box>
+        </Col>
+        <Col sm={6}>
+          <Box mb={3}>
+            <Text>placeholder helper text</Text>
+          </Box>
+        </Col>
+        <Col sm={6}>
+          <Box mb={1}>
+            <InputLabel>ICU+COVID Capable Beds</InputLabel>
             <StyledNumericInput
               type="number"
-              placeholder="0"
+              placeholder="500"
               min={0}
-              max={this.state.hospital.totalBedCount}
-              value={this.state.hospital.occupiedBedCount}
-              onChange={this.updateHospitalField('occupiedBedCount')}
+              value={hospital.icuCovidCapableBedCount}
+              onChange={updateHospitalField('icuCovidCapableBedCount')}
             />
+          </Box>
+        </Col>
+        <Col sm={6}>
+          <Box mb={3}>
+            <Text>placeholder helper text</Text>
+          </Box>
+        </Col>
+        {(hospital.covidCapableBedCount > 0 || hospital.icuCovidCapableBedCount > 0) && (
+          <Col sm={12}>
+            <Box mb={3}>
+              <Text>
+                Total COVID Beds: <b>{hospital.covidCapableBedCount + hospital.icuCovidCapableBedCount}</b>
+              </Text>
+            </Box>
           </Col>
-        </Row>
-      </Box>
-    );
-  }
+        )}
+        <Col sm={6}>
+          <Box mb={1}>
+            <InputLabel>Ventilators</InputLabel>
+            <StyledNumericInput
+              type="number"
+              placeholder="500"
+              min={0}
+              value={hospital.ventilatorCount}
+              onChange={updateHospitalField('ventilatorCount')}
+            />
+          </Box>
+        </Col>
+      </Row>
+    </Box>
+  );
 }
-
-export default HospitalInput;

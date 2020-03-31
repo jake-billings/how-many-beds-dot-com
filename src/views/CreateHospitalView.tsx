@@ -10,8 +10,7 @@ import Container from '../components/ui/Container';
 import Box from '../components/ui/Box';
 import Card from '../components/ui/Card';
 import Button from '../components/ui/Button';
-import { Header1, Header3 } from '../components/ui/type';
-import { Unsubscribe } from 'firebase';
+import { Header1 } from '../components/ui/type';
 
 import { ProtectedRoute } from '../providers/FirebaseAuth';
 
@@ -25,8 +24,14 @@ const defaultHospital = {
     lat: 0,
     lng: 0,
   },
-  totalBedCount: 0,
-  occupiedBedCount: 0,
+  phone: '',
+  capacityPercent: 50,
+  isCovidCenter: false,
+  sharingCovidPatientCount: false,
+  covidPatientCount: 0,
+  covidCapableBedCount: 0,
+  icuCovidCapableBedCount: 0,
+  ventilatorCount: 0,
 };
 
 export default function CreateHospitalView(props: PublicProps): JSX.Element {
@@ -92,13 +97,11 @@ export default function CreateHospitalView(props: PublicProps): JSX.Element {
                         </ul>
                       </>
                     )}
-                    <div className="form-row">
-                      <div className="col-1">
-                        <Button type="submit" disabled={!canCreate()}>
-                          Create
-                        </Button>
-                      </div>
-                    </div>
+                    <Box pa={1}>
+                      <Button type="submit" disabled={!canCreate()}>
+                        Create
+                      </Button>
+                    </Box>
                   </form>
                 </Card>
               </Col>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import firebase from '../firebase';
-import { HospitalForUI, User, UserForUI, Hospital } from '../types';
+import { HospitalForUI, User, UserForUI } from '../types';
 import { Redirect } from 'react-router';
 import Select from 'react-select';
 import { FirebaseAuthContext } from '../providers/FirebaseAuth';
@@ -16,17 +16,17 @@ type HospitalsState = {
 type UsersState = {
   loading: boolean;
   loaded: boolean;
-  users: UserForUI[] | null;
+  users: UserForUI[];
 };
 
 type UserState = {
   loading: boolean;
-  loaded: boolean;
   user: User | null;
 };
 
 export default function AdminUsersView(): JSX.Element {
-  const { firebaseAuthUser, user } = useContext(FirebaseAuthContext);
+  const userState: UserState = useContext(FirebaseAuthContext);
+
   const [hospitalsState, setHospitalsState] = useState<HospitalsState>({
     loading: false,
     loaded: false,
@@ -35,43 +35,40 @@ export default function AdminUsersView(): JSX.Element {
   const [usersState, setUsersState] = useState<UsersState>({
     loading: false,
     loaded: false,
-    users: null,
+    users: [],
   });
 
-  let userRef: firebase.database.Reference | null = null;
   let usersRef: firebase.database.Reference | null = null;
   let hospitalsRef: firebase.database.Reference | null = null;
 
   useEffect(() => {
-    if (firebaseAuthUser && firebaseAuthUser.uid && user) {
-      userRef = firebase.database().ref(`users/${firebaseAuthUser.uid}`);
+    // If the user is signed in and an admin, load a list of all users and all hospitals
+    //  we will have permission to do so.
+    // If not, we won't have permission, so don't bother. There will be a redirect as soon as render() gets called
+    //  anyway.
+    if (userState.user?.isAdmin) {
+      // Load users to populate the table rows and track a ref to unsubscribe later
+      usersRef = firebase.database().ref('users');
+      usersRef.on('value', (usersRef) => {
+        const usersVal: any = usersRef.val();
 
-      userRef.update({
-        lastSignedIn: new Date(),
+        // Map the default Firebase object with ids used as keys to a more traditional array with id values
+        const users: UserForUI[] = Object.keys(usersVal).map((key) => {
+          return {
+            ...usersVal[key],
+            id: key,
+          };
+        });
+
+        setUsersState({ ...usersState, users, loading: false, loaded: true });
       });
 
-      if (user.isAdmin) {
-        usersRef = firebase.database().ref('users');
-
-        usersRef.on('value', (usersRef) => {
-          const usersVal: any = usersRef.val();
-
-          const users: UserForUI[] = Object.keys(usersVal).map((key) => {
-            return {
-              ...usersVal[key],
-              id: key,
-            };
-          });
-
-          setUsersState({ ...usersState, users, loading: false, loaded: true });
-        });
-      }
-
+      // Load the hospitals for the "editorOf" dropdowns and track a ref to unsubscribe later
       hospitalsRef = firebase.database().ref('hospitals');
-
       hospitalsRef.on('value', (ref) => {
         const val: any = ref.val();
 
+        // Map the default Firebase object with ids used as keys to a more traditional array with id values
         let hospitals: HospitalForUI[] | null = null;
         if (val) {
           hospitals = Object.keys(val).map((key) => {
@@ -88,13 +85,12 @@ export default function AdminUsersView(): JSX.Element {
 
     return (): void => {
       if (usersRef) usersRef.off();
-      if (userRef) userRef.off();
       if (hospitalsRef) hospitalsRef.off();
     };
-  }, [user]);
+  }, [userState]);
 
-  const isLoading = (): boolean => usersState.loading || hospitalsState.loading;
-  const isAdmin = (): boolean | null => user?.isAdmin || false;
+  const isLoading = (): boolean => usersState.loading || userState.loading || hospitalsState.loading;
+  const isAdmin = (): boolean => !!userState.user?.isAdmin;
 
   const getHospitalSelectOptions = (): Option[] =>
     ((hospitalsState && hospitalsState.hospitals) || []).map((hospital) => {
@@ -138,24 +134,27 @@ export default function AdminUsersView(): JSX.Element {
               <tbody>
                 {usersState.users &&
                   usersState.users.length > 0 &&
-                  usersState.users.map((user) => (
-                    <tr key={user.id}>
-                      <td>{user.id}</td>
-                      <td>{user.email}</td>
+                  usersState.users.map((rowUser) => (
+                    <tr key={rowUser.id}>
+                      <td>{rowUser.id}</td>
+                      <td>{rowUser.email}</td>
                       <td>
                         <label>
                           <input
                             type="checkbox"
-                            checked={user.isAdmin}
-                            onChange={onIsAdminChange(user.id)}
-                            disabled={user.id === ((user as unknown) as UserForUI).id}
+                            checked={rowUser.isAdmin}
+                            onChange={onIsAdminChange(rowUser.id)}
+                            disabled={rowUser.id === ((userState.user as unknown) as UserForUI).id}
                           />
                         </label>
                       </td>
+                      <td>
+                        {rowUser.id};{((userState.user as unknown) as UserForUI).id}
+                      </td>
                       <td style={{ width: '300px' }}>
                         <Select
-                          value={getHospital(user.editorOf)}
-                          onChange={onSelectHospital(user.id)}
+                          value={getHospital(rowUser.editorOf)}
+                          onChange={onSelectHospital(rowUser.id)}
                           options={getHospitalSelectOptions() as any}
                         />
                       </td>

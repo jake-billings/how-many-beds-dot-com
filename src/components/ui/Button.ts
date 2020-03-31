@@ -6,6 +6,7 @@ export default styled.button`
   border: none;
   border-radius: 4px;
   color: ${colors.white};
+  cursor: pointer;
   font-family: ${fontFamily};
   font-size: 16px;
   font-weight: 500;

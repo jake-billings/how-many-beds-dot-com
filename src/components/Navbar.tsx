@@ -6,9 +6,11 @@ import { Link } from 'react-router-dom';
 import { Location } from '../types';
 import { colors } from './ui/variables';
 import Container from './ui/Container';
-import { Grow } from './Flex';
+import { Flex, Grow } from './Flex';
+import { StyledNavLink } from './ui/type';
 import LocationSearchInput from './LocationInput';
 import AuthStateButton from './AuthStateButton';
+import Box from './ui/Box';
 
 const StyledNavbar = styled.div`
   align-items: center;
@@ -16,17 +18,15 @@ const StyledNavbar = styled.div`
   display: flex;
   height: 60px;
   z-index: -1;
+  @media (max-width: 40em) {
+    height: auto;
+  }
 `;
 
 const StyledNavbarHeader = styled(Link)`
   color: ${colors.white};
   font-size: 16px;
   font-weight: 700;
-  text-decoration: none;
-`;
-
-const StyledNavLink = styled(Link)`
-  color: ${colors.white};
   text-decoration: none;
 `;
 
@@ -42,7 +42,9 @@ export default function Navbar({ onLocationChange, canCreateNewHospital, searchQ
       <Container>
         <Row align="center">
           <Col sm={3}>
-            <StyledNavbarHeader to="/">HowManyBeds.com</StyledNavbarHeader>
+            <Box pv={1}>
+              <StyledNavbarHeader to="/">HowManyBeds.com</StyledNavbarHeader>
+            </Box>
           </Col>
           {onLocationChange && (
             <Col sm={6}>
@@ -54,8 +56,16 @@ export default function Navbar({ onLocationChange, canCreateNewHospital, searchQ
             </Col>
           )}
           <Grow />
-          {canCreateNewHospital && <StyledNavLink to={`/hospitals/new${searchQuery}`}>New Hospital</StyledNavLink>}
-          <AuthStateButton />
+          <Col sm={3}>
+            <Flex>
+              {canCreateNewHospital && (
+                <Box pv={1} mr={3}>
+                  <StyledNavLink to={`/hospitals/new${searchQuery}`}>New Hospital</StyledNavLink>
+                </Box>
+              )}
+              <AuthStateButton />
+            </Flex>
+          </Col>
         </Row>
       </Container>
     </StyledNavbar>
