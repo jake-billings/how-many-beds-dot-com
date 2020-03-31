@@ -32,6 +32,7 @@ export type Hospital = {
   name: string;
   location: Location;
   phone: string;
+  capacityPercent: number;
   isCovidCenter: boolean;
   sharingCovidPatientCount: boolean;
   covidPatientCount: number;

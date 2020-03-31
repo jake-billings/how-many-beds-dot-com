@@ -1,3 +1,5 @@
+import 'rc-slider/assets/index.css';
+
 import React, { useState, ChangeEvent } from 'react';
 import { Row, Col } from 'react-grid-system';
 
@@ -8,6 +10,8 @@ import Box from './ui/Box';
 import { Hospital } from '../types';
 import { Text } from './ui/type';
 import { Flex } from './Flex';
+import Slider from 'rc-slider';
+import { colors } from './ui/variables'
 
 type Props = {
   initialValue: Hospital | null;
@@ -27,6 +31,7 @@ const defaultHospital = {
     lng: 0,
   },
   phone: '',
+  capacityPercent: 50,
   isCovidCenter: false,
   sharingCovidPatientCount: false,
   covidPatientCount: 0,
@@ -85,7 +90,16 @@ export default function HospitalInput({ initialValue, onChange }: Props): JSX.El
         </Col>
         <Col sm={6}>
           <Box mb={3}>
-            <InputLabel>Overall Hospital Utilization</InputLabel>
+            <InputLabel>Overall Hospital Utilization {hospital.capacityPercent}%</InputLabel>
+            <Slider
+              value={hospital.capacityPercent}
+              onChange={updateHospitalField('capacityPercent')}
+              trackStyle={{ backgroundColor: colors.blue }}
+              handleStyle={{ borderColor: colors.blue }}
+              min={0}
+              max={100}
+              defaultValue={50}
+            />
           </Box>
         </Col>
         <Col sm={6}>

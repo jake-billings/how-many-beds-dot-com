@@ -31,6 +31,7 @@ const defaultHospital = {
     lng: 0,
   },
   phone: '',
+  capacityPercent: 50,
   isCovidCenter: false,
   sharingCovidPatientCount: false,
   covidPatientCount: 0,
