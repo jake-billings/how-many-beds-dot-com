@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
+import styled from 'styled-components';
 import firebase from '../firebase';
 import { Location, HospitalForUI } from '../types';
 import { getDistance } from 'geolib';
@@ -7,13 +8,34 @@ import { Row, Col } from 'react-grid-system';
 import { RouteComponentProps } from 'react-router-dom';
 import HospitalCard from '../components/HospitalCard';
 import Box from '../components/ui/Box';
-import Container from '../components/ui/Container';
 import Navbar from '../components/Navbar';
 import HospitalMap from '../components/HospitalMap';
 import { FirebaseAuthContext } from '../providers/FirebaseAuth';
 import { Text } from '../components/ui/type';
 
 type PublicProps = RouteComponentProps;
+
+const RowWrapper = styled(Row)`
+  @media (min-width: 40em) {
+    height: calc(100% - 60px);
+    overflow: hidden;
+  }
+`;
+
+const BoxWrapper = styled(Box)`
+  @media (max-width: 40em) {
+    margin: 0 auto;
+    width: 90%;
+  }
+  @media (min-width: 40em) {
+    height: 100%;
+    margin-left: calc((100vw - 1200px) / 2);
+    overflow-y: scroll;
+  }
+  @media (max-width: 1340px) {
+    margin-left: calc(5vw);
+  }
+`;
 
 export default function HospitalsView(props: RouteComponentProps): JSX.Element {
   const [loadingState, setLoadingState] = useState({
@@ -111,9 +133,9 @@ export default function HospitalsView(props: RouteComponentProps): JSX.Element {
         searchQuery={props.location.search}
       />
       {loadingState.loading && <p>Loading...</p>}
-      <Row style={{ height: 'calc(100% - 60px)', overflow: 'hidden' }}>
+      <RowWrapper>
         <Col md={8} style={{ height: '100%' }}>
-          <Box style={{ marginLeft: 'calc((100vw - 1200px) / 2) ', overflowY: 'scroll', height: '100%' }}>
+          <BoxWrapper>
             <Box mt={5}>
               <Text>Currently sourcing {getHospitals().length} hospitals.</Text>
             </Box>
@@ -135,12 +157,12 @@ export default function HospitalsView(props: RouteComponentProps): JSX.Element {
                 ))}
               </Row>
             </Box>
-          </Box>
+          </BoxWrapper>
         </Col>
         <Col md={4} style={{ height: '100%' }}>
           <HospitalMap location={loc} hospitals={hospitals} />
         </Col>
-      </Row>
+      </RowWrapper>
     </div>
   );
 }
