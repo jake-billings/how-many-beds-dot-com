@@ -95,7 +95,7 @@ export default function HospitalCard({
               <Box mb={0.5}>
                 <StyledStatisticValue primary>{hospital.covidCapableBedCount}</StyledStatisticValue>
               </Box>
-              <StyledStatisticByline>covid beds</StyledStatisticByline>
+              <StyledStatisticByline>COVID Floor Beds Available</StyledStatisticByline>
             </Box>
           </Col>
           <Col xs={6}>
@@ -103,7 +103,7 @@ export default function HospitalCard({
               <Box mb={0.5}>
                 <StyledStatisticValue primary>{hospital.icuCovidCapableBedCount}</StyledStatisticValue>
               </Box>
-              <StyledStatisticByline>covid+icu beds</StyledStatisticByline>
+              <StyledStatisticByline>COVID ICU Beds Available</StyledStatisticByline>
             </Box>
           </Col>
           <Col xs={6}>
@@ -111,7 +111,7 @@ export default function HospitalCard({
               <Box mb={0.5}>
                 <StyledStatisticValue>{hospital.ventilatorCount}</StyledStatisticValue>
               </Box>
-              <StyledStatisticByline>ventilator count</StyledStatisticByline>
+              <StyledStatisticByline>Ventilators Available</StyledStatisticByline>
             </Box>
           </Col>
           {hospital.sharingCovidPatientCount && (
@@ -120,10 +120,18 @@ export default function HospitalCard({
                 <Box mb={0.5}>
                   <StyledStatisticValue>{hospital.covidPatientCount}</StyledStatisticValue>
                 </Box>
-                <StyledStatisticByline>covid patients</StyledStatisticByline>
+                <StyledStatisticByline>COVID patients</StyledStatisticByline>
               </Box>
             </Col>
           )}
+          <Col xs={12}>
+            <Box mb={2}>
+              <Box mb={0.5}>
+                <StyledStatisticValue>{hospital.phone}</StyledStatisticValue>
+              </Box>
+              <StyledStatisticByline>COVID Access Line</StyledStatisticByline>
+            </Box>
+          </Col>
         </Row>
         <Grow />
         <Box mt={3} style={{ width: '100%' }}>

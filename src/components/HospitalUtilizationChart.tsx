@@ -14,8 +14,8 @@ export default function HospitalCard({ hospital }: HospitalUtilizationChartProps
   return (
     <VictoryPie
       data={[
-        { x: 'Utilization', y: hospital.capacityPercent },
-        { x: 'Free Capacity', y: 100 - hospital.capacityPercent },
+        { x: 'Beds Occupied', y: hospital.capacityPercent },
+        { x: 'Capacity', y: 100 - hospital.capacityPercent },
       ]}
       innerRadius={90}
       colorScale={[colors.snow, colors.green]}

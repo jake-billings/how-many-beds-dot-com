@@ -170,7 +170,7 @@ export default function HospitalInput({ initialValue, onChange }: Props): JSX.El
         </Col>
         <Col sm={6}>
           <Box mb={2}>
-            <InputLabel>COVID Capable Beds</InputLabel>
+            <InputLabel>COVID Floor Beds Available</InputLabel>
             <Input
               type="text"
               value={hospital.covidCapableBedCount}
@@ -185,7 +185,7 @@ export default function HospitalInput({ initialValue, onChange }: Props): JSX.El
         </Col>
         <Col sm={6}>
           <Box mb={2}>
-            <InputLabel>ICU+COVID Capable Beds</InputLabel>
+            <InputLabel>ICU COVID Beds Available</InputLabel>
             <Input
               type="text"
               value={hospital.icuCovidCapableBedCount}
@@ -209,7 +209,7 @@ export default function HospitalInput({ initialValue, onChange }: Props): JSX.El
         )}
         <Col sm={6}>
           <Box mb={1}>
-            <InputLabel>Ventilators</InputLabel>
+            <InputLabel>Ventilators Available</InputLabel>
             <Input
               type="text"
               value={hospital.ventilatorCount}
