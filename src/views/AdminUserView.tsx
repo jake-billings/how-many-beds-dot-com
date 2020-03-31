@@ -142,14 +142,11 @@ export default function AdminUsersView(): JSX.Element {
                         <label>
                           <input
                             type="checkbox"
-                            checked={rowUser.isAdmin}
+                            checked={rowUser.isAdmin || false}
                             onChange={onIsAdminChange(rowUser.id)}
                             disabled={rowUser.id === ((userState.user as unknown) as UserForUI).id}
                           />
                         </label>
-                      </td>
-                      <td>
-                        {rowUser.id};{((userState.user as unknown) as UserForUI).id}
                       </td>
                       <td style={{ width: '300px' }}>
                         <Select

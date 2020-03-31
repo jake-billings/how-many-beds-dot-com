@@ -2,13 +2,13 @@ import React, { useState, useEffect } from 'react';
 import firebase from '../firebase';
 import { Unsubscribe, User as FirebaseUser } from 'firebase';
 import { Redirect } from 'react-router-dom';
-import { User } from '../types';
+import { User, UserForUI } from '../types';
 
 type FirebaseContext = {
   loading: boolean;
   isSignedIn: boolean;
   firebaseAuthUser: FirebaseUser | null;
-  user: User | null;
+  user: UserForUI | null;
 };
 
 const defaultFirebaseContext: FirebaseContext = {
@@ -44,7 +44,12 @@ export default function FirebaseAuthProvider(props: FirebaseAuthProviderProps): 
         userRef.on('value', (ref) => {
           const val: User = ref.val() as User;
 
-          setAuthState({ ...authState, isSignedIn: !!firebaseAuthUser, loading: false, firebaseAuthUser, user: val });
+          const user: UserForUI = {
+            id: firebaseAuthUser.uid,
+            ...val,
+          };
+
+          setAuthState({ ...authState, isSignedIn: !!firebaseAuthUser, loading: false, firebaseAuthUser, user });
         });
       } else {
         setAuthState({ ...authState, isSignedIn: !!firebaseAuthUser, loading: false, firebaseAuthUser });
