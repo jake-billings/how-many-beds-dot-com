@@ -13,6 +13,7 @@ import Box from './components/Box'
 import Container from './components/Container'
 import Navbar from './components/Navbar'
 import HospitalMap from './components/HospitalMap'
+import Banner from './components/Banner';
 
 type PublicProps = {}
 
@@ -147,6 +148,7 @@ class HospitalsView extends Component<PublicProps & RouteComponentProps, State> 
 
   render = () => (
     <>
+      <Banner/>
       <Navbar
         onLocationChange={this.onLocationChange}
         canCreateNewHospital={this.state.isAdmin}
