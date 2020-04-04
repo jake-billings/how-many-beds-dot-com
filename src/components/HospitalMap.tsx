@@ -1,27 +1,36 @@
-import React from 'react'
+import React from 'react';
 
-import GoogleMapReact from 'google-map-react'
-import { HospitalForUI, Location } from '../types'
-import HospitalSvg from '../hospital.svg'
+import GoogleMapReact from 'google-map-react';
+import { HospitalForUI, Location } from '../types';
+import HospitalSvg from '../hospital.svg';
 
-const HospitalMarker = ({ name }: any) => (
-  <div>
-    <img
-      src={HospitalSvg}
-      alt='hospital icon'
-      style={{width: '25px', height: '25  px'}}
-    />
-    {name}
-  </div>
-)
+type HospitalMarkerProps = {
+  name: string;
+  lat: number;
+  lng: number;
+};
 
-const DEFAULT_LAT_LNG = {
-  lat: 39.7392,
-  lng: -104.9903,
+function HospitalMarker({ name }: HospitalMarkerProps): JSX.Element {
+  return (
+    <div>
+      <img src={HospitalSvg} alt="hospital icon" style={{ width: '25px', height: '25  px' }} />
+      {name}
+    </div>
+  );
 }
 
-const HospitalMap = ({ hospitals, location }: { hospitals: HospitalForUI[], location: Location | null }) => (
-  <>
+const DEFAULT_LAT_LNG = {
+  lat: 40.7306,
+  lng: -73.9352,
+};
+
+type HospitalMapProps = {
+  hospitals: HospitalForUI[];
+  location: Location | null;
+};
+
+export default function HospitalMap({ hospitals, location }: HospitalMapProps): JSX.Element {
+  return (
     <div style={{ height: '100%', width: '100%' }}>
       <GoogleMapReact
         center={{
@@ -31,20 +40,15 @@ const HospitalMap = ({ hospitals, location }: { hospitals: HospitalForUI[], loca
         yesIWantToUseGoogleMapApiInternals
         defaultZoom={10}
       >
-        {
-          hospitals.map(hospital => (
-            <HospitalMarker
-              key={hospital.id}
-              lat={hospital.location.lat}
-              lng={hospital.location.lng}
-              name={hospital.name}
-            />
-          ))
-        }
-
+        {hospitals.map((hospital) => (
+          <HospitalMarker
+            key={hospital.id}
+            lat={hospital.location.lat}
+            lng={hospital.location.lng}
+            name={hospital.name}
+          />
+        ))}
       </GoogleMapReact>
     </div>
-  </>
-)
-
-export default HospitalMap
+  );
+}

@@ -1,6 +1,6 @@
-import styled from 'styled-components'
+import styled from 'styled-components';
 
-import { colors } from './variables'
+import { colors } from './variables';
 
 export default styled.div`
   background-color: ${colors.white};
@@ -8,4 +8,4 @@ export default styled.div`
   border-radius: 8px;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
   padding: 16px;
-`
+`;
