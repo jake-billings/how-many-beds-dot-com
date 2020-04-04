@@ -4,9 +4,9 @@ The purpose of this project is to make hospital utilization data public so that 
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-![screenshot](screeshots/hospitals.png)
+![screenshot](screenshots/hospitals.png)
 
-![screenshot 2](screeshots/create-hospital.png)
+![screenshot 2](screenshots/create-hospital.png)
 
 ## Available Scripts
 
