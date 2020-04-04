@@ -12,6 +12,7 @@ import Navbar from '../components/Navbar';
 import HospitalMap from '../components/HospitalMap';
 import { FirebaseAuthContext } from '../providers/FirebaseAuth';
 import { Text } from '../components/ui/type';
+import Banner from '../components/ui/Banner';
 
 type PublicProps = RouteComponentProps;
 
@@ -127,6 +128,7 @@ export default function HospitalsView(props: RouteComponentProps): JSX.Element {
 
   return (
     <div style={{ height: '100%', width: '100%', overflow: 'hidden' }}>
+      <Banner />
       <Navbar
         onLocationChange={(location): void => {
           setLocation(location);
