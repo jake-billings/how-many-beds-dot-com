@@ -1,4 +1,12 @@
+# how-many-beds-dot-com
+
+The purpose of this project is to make hospital utilization data public so that patients seeking treatment for COVID-19 can avoid hospitals that are already experiencing high stress.
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+
+![screenshot](screeshots/hospitals.png)
+
+![screenshot 2](screeshots/create-hospital.png)
 
 ## Available Scripts
 
@@ -66,3 +74,9 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/de
 ### `yarn build` fails to minify
 
 This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+
+# Contributors
+
+- [Jake Billings](https://jakebillings.com)
+- [Henry Kaufman](https://kaufman.io)
+- [Gunnar Enserro](https://gunslam.github.io/GunnarE/)
