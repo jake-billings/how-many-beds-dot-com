@@ -10,9 +10,9 @@ import HospitalCard from '../components/HospitalCard';
 import Box from '../components/ui/Box';
 import Navbar from '../components/Navbar';
 import HospitalMap from '../components/HospitalMap';
-import Banner from '../components/Banner';
 import { FirebaseAuthContext } from '../providers/FirebaseAuth';
 import { Text } from '../components/ui/type';
+import Banner from '../components/ui/Banner';
 
 type PublicProps = RouteComponentProps;
 
