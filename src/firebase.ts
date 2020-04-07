@@ -1,4 +1,4 @@
-import firebase from 'firebase'
+import firebase from 'firebase';
 
 /**
  * config
@@ -11,10 +11,10 @@ import firebase from 'firebase'
  * Access control is maintained by Firebase rules.
  */
 const config = {
-  apiKey: "AIzaSyBZq9e31zx1SujkjheC1ynjXVuP_QRh1NA",
-  authDomain: "howmanybedsdotcom-3de41.firebaseapp.com",
-  databaseURL: "https://howmanybedsdotcom-3de41.firebaseio.com",
-  projectId: "howmanybedsdotcom-3de41",
+  apiKey: 'AIzaSyBZq9e31zx1SujkjheC1ynjXVuP_QRh1NA',
+  authDomain: 'howmanybedsdotcom-3de41.firebaseapp.com',
+  databaseURL: 'https://howmanybedsdotcom-3de41.firebaseio.com',
+  projectId: 'howmanybedsdotcom-3de41',
 };
 
 //Initialize firebase then export it

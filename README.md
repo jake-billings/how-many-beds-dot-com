@@ -1,4 +1,24 @@
+# how-many-beds-dot-com
+
+View the Live Website Here: [https://howmanybeds.com/](https://howmanybeds.com/)
+
+or View the Live Website Here: [https://howmanybedsdotcom-3de41.firebaseapp.com](https://howmanybedsdotcom-3de41.firebaseapp.com)
+
+The purpose of this project is to make hospital utilization data public so that patients seeking treatment for COVID-19 can avoid hospitals that are already experiencing high stress.
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+
+![screenshot 2](screenshots/create-hospital.png)
+
+![screenshot](screenshots/hospitals.png)
+
+# Technologies
+
+- Address Validation/Autocomplete Using Google Maps Geocoding
+- Google Maps Integration
+- Firebase
+- React
+- Typescript
 
 ## Available Scripts
 
@@ -66,3 +86,9 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/de
 ### `yarn build` fails to minify
 
 This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+
+# Contributors
+
+- [Jake Billings](https://jakebillings.com)
+- [Henry Kaufman](https://kaufman.io)
+- [Gunnar Enserro](https://gunslam.github.io/GunnarE/)
